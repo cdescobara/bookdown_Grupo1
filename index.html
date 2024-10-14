@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Series de Tiempo - Volatilidad Precio Bitcoin</title>
+  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+set in the _output.yml file.
+The HTML output format for this example is bookdown::gitbook,</p>" />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Series de Tiempo - Volatilidad Precio Bitcoin" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+set in the _output.yml file.
+The HTML output format for this example is bookdown::gitbook,</p>" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Series de Tiempo - Volatilidad Precio Bitcoin" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+set in the _output.yml file.
+The HTML output format for this example is bookdown::gitbook,</p>" />
+  
+
+
+
+<meta name="date" content="2024-10-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="#propuesta-bookdown"><i class="fa fa-check"></i><b>1</b> Propuesta Bookdown</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Series de Tiempo - Volatilidad Precio Bitcoin</h1>
+<p class="author"><em><p><strong>Christian Daniel Escobar Anduquia</strong><br />
+<strong>Luis Carlos Ruiz Ramos</strong><br />
+<strong>Daniel Duarte Quintero</strong></p></em></p>
+<p class="date"><em>2024-10-14</em></p>
+</div>
+<div id="propuesta-bookdown" class="section level1 hasAnchor" style="text-align: justify" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Propuesta Bookdown<a href="#propuesta-bookdown" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>El tipo de información a analizar corresponde al precio del Bitcoin. Para ello, se llevará a cabo un estudio centrado en su comportamiento a lo largo del tiempo, con especial atención en identificar si presenta los componentes típicos de una serie de tiempo, como la tendencia, estacionalidad, ciclos, entre otros. El análisis de series de tiempo es esencial, dado que permite evaluar si el comportamiento pasado de una variable tiene relación con su evolución futura, algo crucial al estudiar activos financieros tan volátiles como el Bitcoin.</p>
+<p>El Bitcoin, como criptomoneda, ha ganado relevancia en los mercados financieros gracias a su naturaleza descentralizada, su capacidad para diversificar portafolios y su marcada volatilidad. Aunque esta volatilidad puede percibirse como riesgosa, también ofrece oportunidades de alta rentabilidad para aquellos inversionistas con una menor aversión al riesgo, que buscan aprovechar fluctuaciones rápidas y significativas en su precio.</p>
+<p>La importancia de determinar si el precio del Bitcoin cumple con los componentes de una serie de tiempo, radica en la capacidad de realizar predicciones más precisas sobre su comportamiento futuro. Identificar una tendencia o ciclos repetitivos permitiría a los inversionistas tomar decisiones informadas sobre el mejor momento para comprar o vender este activo, lo que podría maximizar sus rendimientos y minimizar riesgos.</p>
+<p>La predicción del precio del Bitcoin no solo es relevante para los inversionistas individuales, sino también para quienes gestionan portafolios diversificados o desean establecer mecanismos de cobertura frente a la volatilidad del mercado. Con una adecuada predicción basada en series de tiempo, que combine tanto el análisis técnico como el fundamental, es posible desarrollar estrategias de inversión más robustas. Esto permitiría ajustar las decisiones de inversión de acuerdo con los movimientos del Bitcoin en relación con otros activos financieros, detectando períodos óptimos para comprar o vender. Las series de tiempo también permiten evaluar cómo la volatilidad del Bitcoin se correlaciona con otros activos, proporcionando a los gestores de portafolios herramientas para optimizar la diversificación y desarrollar mecanismos de cobertura que mitiguen el riesgo asociado a las fluctuaciones de este criptoactivo.</p>
+<p>Para alcanzar este objetivo, se emplearán datos diarios que incluyan, entre otras variables, el precio de cierre del Bitcoin. Estos datos se obtendrán de Yahoo Finance, una fuente confiable y ampliamente reconocida que ofrece información precisa y actualizada sobre los precios de diversos activos financieros, incluidas las criptomonedas. Yahoo Finance se destaca por su accesibilidad y la calidad de sus datos históricos, lo que permite realizar análisis detallados y a largo plazo sobre el comportamiento del precio del Bitcoin.</p>
+<p><strong>Extraer Información desde Yahoo Finance</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Suprimir mensajes y advertencias al cargar los paquetes</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">suppressMessages</span>({</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>  <span class="fu">library</span>(quantmod)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>}))</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># Obtener los datos de Bitcoin desde Yahoo Finance</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="st">&quot;BTC-USD&quot;</span>, <span class="at">src =</span> <span class="st">&quot;yahoo&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;BTC-USD&quot;</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Se almacenan en una variable llamada btc_data</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>btc_data <span class="ot">&lt;-</span> <span class="fu">getSymbols</span>(<span class="st">&quot;BTC-USD&quot;</span>, <span class="at">src =</span> <span class="st">&quot;yahoo&quot;</span>, <span class="at">auto.assign =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co"># Se verifica la estructura de datos</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="fu">str</span>(btc_data)</span></code></pre></div>
+<pre><code>## An xts object on 2014-09-17 / 2024-10-14 containing: 
+##   Data:    double [3681, 6]
+##   Columns: BTC-USD.Open, BTC-USD.High, BTC-USD.Low, BTC-USD.Close, BTC-USD.Volume ... with 1 more column
+##   Index:   Date [3681] (TZ: &quot;UTC&quot;)
+##   xts Attributes:
+##     $ src    : chr &quot;yahoo&quot;
+##     $ updated: POSIXct[1:1], format: &quot;2024-10-14 10:31:37&quot;</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Generar primera fila</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>first_row <span class="ot">&lt;-</span> <span class="fu">head</span>(btc_data, <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># Generar última fila</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>last_row <span class="ot">&lt;-</span> <span class="fu">tail</span>(btc_data, <span class="dv">1</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># Mostrar la primera y última fila</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>first_row</span></code></pre></div>
+<pre><code>##            BTC-USD.Open BTC-USD.High BTC-USD.Low BTC-USD.Close BTC-USD.Volume
+## 2014-09-17      465.864      468.174     452.422       457.334       21056800
+##            BTC-USD.Adjusted
+## 2014-09-17          457.334</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>last_row</span></code></pre></div>
+<pre><code>##            BTC-USD.Open BTC-USD.High BTC-USD.Low BTC-USD.Close BTC-USD.Volume
+## 2024-10-14     62843.59     66178.39     62470.2      65990.09    37358931968
+##            BTC-USD.Adjusted
+## 2024-10-14         65990.09</code></pre>
+</div>
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
