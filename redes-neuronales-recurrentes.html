@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 7 Redes Neuronales Recurrentes | Series de Tiempo - Volatilidad Precio Bitcoin</title>
+  <meta name="description" content="Análisis de Series de Tiempo." />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 7 Redes Neuronales Recurrentes | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Análisis de Series de Tiempo." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 7 Redes Neuronales Recurrentes | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  
+  <meta name="twitter:description" content="Análisis de Series de Tiempo." />
+  
+
+
+
+<meta name="date" content="2024-12-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="modelos-de-regresión.html"/>
+<link rel="next" href="conclusiones.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Propuesta Bookdown</a></li>
+<li class="chapter" data-level="2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html"><i class="fa fa-check"></i><b>2</b> Estructura de datos</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#promedio-móvil"><i class="fa fa-check"></i><b>2.1</b> Promedio Móvil</a></li>
+<li class="chapter" data-level="2.2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#rezagos-lag"><i class="fa fa-check"></i><b>2.2</b> Rezagos (Lag)</a></li>
+<li class="chapter" data-level="2.3" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#estacionalidad"><i class="fa fa-check"></i><b>2.3</b> Estacionalidad</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html"><i class="fa fa-check"></i><b>3</b> Preprocesamiento y Visualización</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#descomposición"><i class="fa fa-check"></i><b>3.1</b> Descomposición</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#estacionariedad"><i class="fa fa-check"></i><b>3.2</b> Estacionariedad</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#diferenciación"><i class="fa fa-check"></i><b>3.3</b> Diferenciación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html"><i class="fa fa-check"></i><b>4</b> Modelos de Pronósticos (Suavización Exponencial)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#suavización-exponencial-simple"><i class="fa fa-check"></i><b>4.1</b> Suavización Exponencial Simple</a></li>
+<li class="chapter" data-level="4.2" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt"><i class="fa fa-check"></i><b>4.2</b> Modelo de Holt</a></li>
+<li class="chapter" data-level="4.3" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt-winters"><i class="fa fa-check"></i><b>4.3</b> Modelo de Holt-Winters</a></li>
+<li class="chapter" data-level="4.4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#resumen-de-métricas"><i class="fa fa-check"></i><b>4.4</b> Resumen de Métricas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html"><i class="fa fa-check"></i><b>5</b> Modelos Estacionarios</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-auto"><i class="fa fa-check"></i><b>5.1</b> Modelo ARIMA (Auto)</a></li>
+<li class="chapter" data-level="5.2" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-manual"><i class="fa fa-check"></i><b>5.2</b> Modelo ARIMA (Manual)</a></li>
+<li class="chapter" data-level="5.3" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#comparación-de-modelos"><i class="fa fa-check"></i><b>5.3</b> Comparación de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html"><i class="fa fa-check"></i><b>6</b> Modelos de Regresión</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#modelo-prophet"><i class="fa fa-check"></i><b>6.1</b> Modelo Prophet</a></li>
+<li class="chapter" data-level="6.2" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#comparación-con-arima-y-ets"><i class="fa fa-check"></i><b>6.2</b> Comparación con ARIMA y ETS</a></li>
+<li class="chapter" data-level="6.3" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#selección-del-mejor-modelo"><i class="fa fa-check"></i><b>6.3</b> Selección del mejor modelo</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html"><i class="fa fa-check"></i><b>7</b> Redes Neuronales Recurrentes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#elman-neural-networks"><i class="fa fa-check"></i><b>7.1</b> Elman Neural Networks</a></li>
+<li class="chapter" data-level="7.2" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#jordan-neural-networks"><i class="fa fa-check"></i><b>7.2</b> Jordan Neural Networks</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>8</b> Conclusiones</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="redes-neuronales-recurrentes" class="section level1 hasAnchor" style="text-align: justify" number="7">
+<h1><span class="header-section-number">Capítulo 7</span> Redes Neuronales Recurrentes<a href="redes-neuronales-recurrentes.html#redes-neuronales-recurrentes" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Consisten en un tipo de arquitectura de redes neuronales diseñadas para procesar datos secuenciales o temporales. Esto las hace particularmente útiles para tareas donde el orden o la temporalidad de los datos importa, como el procesamiento de texto, series temporales, y señales como audio o video. Utilizan el contexto histórico de una serie de tiempo para predecir valores futuros, como en la predicción de tendencias económicas o financieras.</p>
+<div id="elman-neural-networks" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Elman Neural Networks<a href="redes-neuronales-recurrentes.html#elman-neural-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Son una de las primeras arquitecturas de Redes Neuronales Recurrentes (RNN) y se destacaron por su enfoque innovador al incorporar una memoria explícita a través de las neuronas de contexto. Esta capacidad de memoria les permitió manejar datos secuenciales y modelar relaciones temporales en tareas como predicción de series temporales, reconocimiento de patrones y procesamiento del lenguaje natural.</p>
+<p><strong>Inicialmente se estandarizan los datos</strong></p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="redes-neuronales-recurrentes.html#cb99-1" tabindex="-1"></a><span class="co"># Escalar los datos</span></span>
+<span id="cb99-2"><a href="redes-neuronales-recurrentes.html#cb99-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">as.ts</span>(<span class="fu">scale</span>(btc_final))</span></code></pre></div>
+<p>Los datos de la serie se escalaron para asegurar que todas las variables tengan una media de cero y una desviación estándar de uno, lo que facilita el entrenamiento de la red neuronal.</p>
+<p><strong>Posteriormente se selecciona la cantidad de rezagos:</strong></p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="redes-neuronales-recurrentes.html#cb100-1" tabindex="-1"></a><span class="co"># Se convierte la serie a la clase zoo</span></span>
+<span id="cb100-2"><a href="redes-neuronales-recurrentes.html#cb100-2" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">as.zoo</span>(y)</span>
+<span id="cb100-3"><a href="redes-neuronales-recurrentes.html#cb100-3" tabindex="-1"></a></span>
+<span id="cb100-4"><a href="redes-neuronales-recurrentes.html#cb100-4" tabindex="-1"></a><span class="co"># Operador Quantmod Lag:</span></span>
+<span id="cb100-5"><a href="redes-neuronales-recurrentes.html#cb100-5" tabindex="-1"></a>x1<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">1</span>)</span>
+<span id="cb100-6"><a href="redes-neuronales-recurrentes.html#cb100-6" tabindex="-1"></a>x2<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">2</span>)</span>
+<span id="cb100-7"><a href="redes-neuronales-recurrentes.html#cb100-7" tabindex="-1"></a>x3<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">3</span>)</span>
+<span id="cb100-8"><a href="redes-neuronales-recurrentes.html#cb100-8" tabindex="-1"></a>x4<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">4</span>)</span>
+<span id="cb100-9"><a href="redes-neuronales-recurrentes.html#cb100-9" tabindex="-1"></a>x5<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">5</span>)</span>
+<span id="cb100-10"><a href="redes-neuronales-recurrentes.html#cb100-10" tabindex="-1"></a>x6<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">6</span>)</span>
+<span id="cb100-11"><a href="redes-neuronales-recurrentes.html#cb100-11" tabindex="-1"></a>x7<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">7</span>)</span>
+<span id="cb100-12"><a href="redes-neuronales-recurrentes.html#cb100-12" tabindex="-1"></a>x8<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">8</span>)</span>
+<span id="cb100-13"><a href="redes-neuronales-recurrentes.html#cb100-13" tabindex="-1"></a>x9<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">9</span>)</span>
+<span id="cb100-14"><a href="redes-neuronales-recurrentes.html#cb100-14" tabindex="-1"></a>x10<span class="ot">&lt;-</span><span class="fu">Lag</span>(y,<span class="at">k=</span><span class="dv">10</span>)</span></code></pre></div>
+<p>Se crearon 10 variables de rezago (lags) de la serie temporal, representando los valores anteriores en distintos momentos. Estos rezagos sirven como atributos de entrada para la red, permitiendo que el modelo capture dependencias temporales.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="redes-neuronales-recurrentes.html#cb101-1" tabindex="-1"></a><span class="co"># se agrupan las variables</span></span>
+<span id="cb101-2"><a href="redes-neuronales-recurrentes.html#cb101-2" tabindex="-1"></a>rnn_btc_elm <span class="ot">&lt;-</span> <span class="fu">cbind</span>(x1,x2,x3,x4,x5,x6,x7,x8,x9,x10)</span>
+<span id="cb101-3"><a href="redes-neuronales-recurrentes.html#cb101-3" tabindex="-1"></a>rnn_btc_elm <span class="ot">&lt;-</span> <span class="fu">cbind</span>(y,rnn_btc_elm)</span>
+<span id="cb101-4"><a href="redes-neuronales-recurrentes.html#cb101-4" tabindex="-1"></a></span>
+<span id="cb101-5"><a href="redes-neuronales-recurrentes.html#cb101-5" tabindex="-1"></a><span class="co"># se guarda el vector para la otra red neuronal</span></span>
+<span id="cb101-6"><a href="redes-neuronales-recurrentes.html#cb101-6" tabindex="-1"></a>rnn_btc_jor <span class="ot">&lt;-</span> <span class="fu">cbind</span>(y,rnn_btc_elm)</span>
+<span id="cb101-7"><a href="redes-neuronales-recurrentes.html#cb101-7" tabindex="-1"></a></span>
+<span id="cb101-8"><a href="redes-neuronales-recurrentes.html#cb101-8" tabindex="-1"></a><span class="co"># se eliminan los NA</span></span>
+<span id="cb101-9"><a href="redes-neuronales-recurrentes.html#cb101-9" tabindex="-1"></a>rnn_btc_elm <span class="ot">&lt;-</span> rnn_btc_elm[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>),]</span>
+<span id="cb101-10"><a href="redes-neuronales-recurrentes.html#cb101-10" tabindex="-1"></a></span>
+<span id="cb101-11"><a href="redes-neuronales-recurrentes.html#cb101-11" tabindex="-1"></a><span class="co"># Visualizar rezagos</span></span>
+<span id="cb101-12"><a href="redes-neuronales-recurrentes.html#cb101-12" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">round</span>(rnn_btc_elm,<span class="dv">2</span>),<span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##        y Lag.1 Lag.2 Lag.3 Lag.4 Lag.5 Lag.6 Lag.7 Lag.8 Lag.9 Lag.10
+## 11 -0.34 -0.18 -0.07 -0.04 -0.12 -0.27 -0.44 -0.55 -0.51 -0.54  -0.70
+## 12 -0.44 -0.34 -0.18 -0.07 -0.04 -0.12 -0.27 -0.44 -0.55 -0.51  -0.54
+## 13 -0.24 -0.44 -0.34 -0.18 -0.07 -0.04 -0.12 -0.27 -0.44 -0.55  -0.51
+## 14 -0.13 -0.24 -0.44 -0.34 -0.18 -0.07 -0.04 -0.12 -0.27 -0.44  -0.55
+## 15 -0.27 -0.13 -0.24 -0.44 -0.34 -0.18 -0.07 -0.04 -0.12 -0.27  -0.44
+## 16 -0.31 -0.27 -0.13 -0.24 -0.44 -0.34 -0.18 -0.07 -0.04 -0.12  -0.27
+## 17 -0.33 -0.31 -0.27 -0.13 -0.24 -0.44 -0.34 -0.18 -0.07 -0.04  -0.12
+## 18 -0.28 -0.33 -0.31 -0.27 -0.13 -0.24 -0.44 -0.34 -0.18 -0.07  -0.04
+## 19 -0.31 -0.28 -0.33 -0.31 -0.27 -0.13 -0.24 -0.44 -0.34 -0.18  -0.07
+## 20 -0.34 -0.31 -0.28 -0.33 -0.31 -0.27 -0.13 -0.24 -0.44 -0.34  -0.18</code></pre>
+<p><strong>Se crea el set de entrenamiento:</strong></p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="redes-neuronales-recurrentes.html#cb103-1" tabindex="-1"></a><span class="co"># Configurar la semilla para reproducibilidad</span></span>
+<span id="cb103-2"><a href="redes-neuronales-recurrentes.html#cb103-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb103-3"><a href="redes-neuronales-recurrentes.html#cb103-3" tabindex="-1"></a></span>
+<span id="cb103-4"><a href="redes-neuronales-recurrentes.html#cb103-4" tabindex="-1"></a><span class="co"># Número total de filas</span></span>
+<span id="cb103-5"><a href="redes-neuronales-recurrentes.html#cb103-5" tabindex="-1"></a>num_filas_elm <span class="ot">&lt;-</span> <span class="fu">nrow</span>(rnn_btc_elm)</span>
+<span id="cb103-6"><a href="redes-neuronales-recurrentes.html#cb103-6" tabindex="-1"></a></span>
+<span id="cb103-7"><a href="redes-neuronales-recurrentes.html#cb103-7" tabindex="-1"></a><span class="co"># Proporción de entrenamiento (80%)</span></span>
+<span id="cb103-8"><a href="redes-neuronales-recurrentes.html#cb103-8" tabindex="-1"></a>prop_train_elm <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb103-9"><a href="redes-neuronales-recurrentes.html#cb103-9" tabindex="-1"></a>num_train_elm <span class="ot">&lt;-</span> <span class="fu">floor</span>(num_filas_elm <span class="sc">*</span> prop_train_elm)</span>
+<span id="cb103-10"><a href="redes-neuronales-recurrentes.html#cb103-10" tabindex="-1"></a></span>
+<span id="cb103-11"><a href="redes-neuronales-recurrentes.html#cb103-11" tabindex="-1"></a><span class="co"># Crear índices para las filas de entrenamiento</span></span>
+<span id="cb103-12"><a href="redes-neuronales-recurrentes.html#cb103-12" tabindex="-1"></a>train_indices_elm <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>num_filas_elm, <span class="at">size =</span> num_train_elm, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Se dividió el conjunto de datos en entrenamiento (80%) de manera aleatoria para evaluar el rendimiento del modelo en datos no vistos.</p>
+<p><strong>Se crea la Red Neuronal Elman y se entrena:</strong></p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="redes-neuronales-recurrentes.html#cb104-1" tabindex="-1"></a><span class="co"># se definen valores de entrada y salida de la red</span></span>
+<span id="cb104-2"><a href="redes-neuronales-recurrentes.html#cb104-2" tabindex="-1"></a>inputs <span class="ot">&lt;-</span> rnn_btc_elm[,<span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb104-3"><a href="redes-neuronales-recurrentes.html#cb104-3" tabindex="-1"></a>outputs <span class="ot">&lt;-</span> rnn_btc_elm[,<span class="dv">1</span>]</span>
+<span id="cb104-4"><a href="redes-neuronales-recurrentes.html#cb104-4" tabindex="-1"></a></span>
+<span id="cb104-5"><a href="redes-neuronales-recurrentes.html#cb104-5" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">elman</span>(</span>
+<span id="cb104-6"><a href="redes-neuronales-recurrentes.html#cb104-6" tabindex="-1"></a>  inputs[train_indices_elm], </span>
+<span id="cb104-7"><a href="redes-neuronales-recurrentes.html#cb104-7" tabindex="-1"></a>  outputs[train_indices_elm],</span>
+<span id="cb104-8"><a href="redes-neuronales-recurrentes.html#cb104-8" tabindex="-1"></a>  <span class="at">size=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>), </span>
+<span id="cb104-9"><a href="redes-neuronales-recurrentes.html#cb104-9" tabindex="-1"></a>  <span class="at">learnFuncParams=</span><span class="fu">c</span>(<span class="fl">0.1</span>),</span>
+<span id="cb104-10"><a href="redes-neuronales-recurrentes.html#cb104-10" tabindex="-1"></a>  <span class="at">maxit =</span><span class="dv">5000</span></span>
+<span id="cb104-11"><a href="redes-neuronales-recurrentes.html#cb104-11" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Las 10 variables de rezago se utilizaron como entradas para la red neuronal. Por otra parte, la serie temporal original se utilizó como la variable objetivo que el modelo intenta predecir.</p>
+<p>Se implementó una red con dos capas ocultas; la primera con 3 neuronas y la segunda con 2 neuronas. Esta configuración permite al modelo capturar patrones complejos en los datos. La tasa de aprendizaje se estableció en 0.1, determinando la velocidad con la que el modelo ajusta sus pesos durante el entrenamiento. El número de iteraciones se fijó en 5,000, indicando cuántas veces el algoritmo de entrenamiento procesa el conjunto de datos completo.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="redes-neuronales-recurrentes.html#cb105-1" tabindex="-1"></a><span class="fu">plotIterativeError</span>(fit)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-297-1.png" width="672" /></p>
+<p>Al graficar el error iterativo, se observó una rápida convergencia hacia cero, sugiriendo que el modelo aprendió eficazmente la relación entre las variables de entrada y la salida.</p>
+<p><strong>Se realiza predicción con los términos restantes de la serie:</strong></p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="redes-neuronales-recurrentes.html#cb106-1" tabindex="-1"></a><span class="co"># Convertir la salida a vector</span></span>
+<span id="cb106-2"><a href="redes-neuronales-recurrentes.html#cb106-2" tabindex="-1"></a>y<span class="ot">&lt;-</span><span class="fu">as.vector</span>(outputs[<span class="sc">-</span>train_indices_elm])</span>
+<span id="cb106-3"><a href="redes-neuronales-recurrentes.html#cb106-3" tabindex="-1"></a></span>
+<span id="cb106-4"><a href="redes-neuronales-recurrentes.html#cb106-4" tabindex="-1"></a><span class="co"># Graficar los valores reales con título y etiquetas</span></span>
+<span id="cb106-5"><a href="redes-neuronales-recurrentes.html#cb106-5" tabindex="-1"></a><span class="fu">plot</span>(y, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb106-6"><a href="redes-neuronales-recurrentes.html#cb106-6" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Predicción con Elman&quot;</span>,  </span>
+<span id="cb106-7"><a href="redes-neuronales-recurrentes.html#cb106-7" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Índice de Tiempo&quot;</span>,      </span>
+<span id="cb106-8"><a href="redes-neuronales-recurrentes.html#cb106-8" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Valor y&quot;</span>)</span>
+<span id="cb106-9"><a href="redes-neuronales-recurrentes.html#cb106-9" tabindex="-1"></a></span>
+<span id="cb106-10"><a href="redes-neuronales-recurrentes.html#cb106-10" tabindex="-1"></a><span class="co"># Generar predicciones</span></span>
+<span id="cb106-11"><a href="redes-neuronales-recurrentes.html#cb106-11" tabindex="-1"></a>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, inputs[<span class="sc">-</span>train_indices_elm])</span>
+<span id="cb106-12"><a href="redes-neuronales-recurrentes.html#cb106-12" tabindex="-1"></a></span>
+<span id="cb106-13"><a href="redes-neuronales-recurrentes.html#cb106-13" tabindex="-1"></a><span class="co"># Añadir las predicciones al gráfico en rojo</span></span>
+<span id="cb106-14"><a href="redes-neuronales-recurrentes.html#cb106-14" tabindex="-1"></a><span class="fu">lines</span>(pred, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb106-15"><a href="redes-neuronales-recurrentes.html#cb106-15" tabindex="-1"></a></span>
+<span id="cb106-16"><a href="redes-neuronales-recurrentes.html#cb106-16" tabindex="-1"></a><span class="co"># Agregar una leyenda para distinguir entre valores reales y predicciones</span></span>
+<span id="cb106-17"><a href="redes-neuronales-recurrentes.html#cb106-17" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Valores Reales&quot;</span>, <span class="st">&quot;Predicción&quot;</span>), </span>
+<span id="cb106-18"><a href="redes-neuronales-recurrentes.html#cb106-18" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-298-1.png" width="672" /></p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="redes-neuronales-recurrentes.html#cb107-1" tabindex="-1"></a><span class="co"># Métricas de las series</span></span>
+<span id="cb107-2"><a href="redes-neuronales-recurrentes.html#cb107-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Coeficiente de correlación&quot;</span>, <span class="fu">cor</span>(outputs[<span class="sc">-</span>train_indices_elm], pred)<span class="sc">^</span><span class="dv">2</span>, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## Coeficiente de correlación 0.9853925</code></pre>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="redes-neuronales-recurrentes.html#cb109-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Error cuadrático medio&quot;</span>, <span class="fu">mean</span>((outputs[<span class="sc">-</span>train_indices_elm] <span class="sc">-</span> pred)<span class="sc">^</span><span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## Error cuadrático medio 0.04617113</code></pre>
+<p>Se realizaron predicciones sobre el conjunto de prueba para evaluar la capacidad del modelo en datos no vistos. Se observa que la predicción sobre la serie original es buena, en muchas ocasiones coincide con los datos reales.</p>
+<p>Este proceso demuestra una aplicación meticulosa de las Redes Neuronales Elman en la modelación de series temporales, destacando la importancia del preprocesamiento de datos, la adecuada parametrización del modelo y la evaluación rigurosa para asegurar un rendimiento óptimo.</p>
+</div>
+<div id="jordan-neural-networks" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Jordan Neural Networks<a href="redes-neuronales-recurrentes.html#jordan-neural-networks" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Son otra variante de las Redes Neuronales Recurrentes (RNN). Estas redes son similares a las Redes de Elman, pero presentan una diferencia clave: en lugar de usar la salida de la capa oculta para las conexiones de contexto, las Redes de Jordan utilizan la salida de la red como memoria recurrente.</p>
+<p>Para hacer lo más posible comparable a la red Jordan con la red Elman, se aplican los mismos pasos.</p>
+<p><strong>Se crea el set de entrenamiento:</strong></p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="redes-neuronales-recurrentes.html#cb111-1" tabindex="-1"></a><span class="co"># se eliminan los NA</span></span>
+<span id="cb111-2"><a href="redes-neuronales-recurrentes.html#cb111-2" tabindex="-1"></a>rnn_btc_jor <span class="ot">&lt;-</span> rnn_btc_jor[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>),]</span>
+<span id="cb111-3"><a href="redes-neuronales-recurrentes.html#cb111-3" tabindex="-1"></a></span>
+<span id="cb111-4"><a href="redes-neuronales-recurrentes.html#cb111-4" tabindex="-1"></a><span class="co"># Configurar la semilla para reproducibilidad</span></span>
+<span id="cb111-5"><a href="redes-neuronales-recurrentes.html#cb111-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb111-6"><a href="redes-neuronales-recurrentes.html#cb111-6" tabindex="-1"></a></span>
+<span id="cb111-7"><a href="redes-neuronales-recurrentes.html#cb111-7" tabindex="-1"></a><span class="co"># Número total de filas</span></span>
+<span id="cb111-8"><a href="redes-neuronales-recurrentes.html#cb111-8" tabindex="-1"></a>num_filas_jor <span class="ot">&lt;-</span> <span class="fu">nrow</span>(rnn_btc_jor)</span>
+<span id="cb111-9"><a href="redes-neuronales-recurrentes.html#cb111-9" tabindex="-1"></a></span>
+<span id="cb111-10"><a href="redes-neuronales-recurrentes.html#cb111-10" tabindex="-1"></a><span class="co"># Proporción de entrenamiento (80%)</span></span>
+<span id="cb111-11"><a href="redes-neuronales-recurrentes.html#cb111-11" tabindex="-1"></a>prop_train_jor <span class="ot">&lt;-</span> <span class="fl">0.8</span></span>
+<span id="cb111-12"><a href="redes-neuronales-recurrentes.html#cb111-12" tabindex="-1"></a>num_train_jor <span class="ot">&lt;-</span> <span class="fu">floor</span>(num_filas_jor <span class="sc">*</span> prop_train_jor)</span>
+<span id="cb111-13"><a href="redes-neuronales-recurrentes.html#cb111-13" tabindex="-1"></a></span>
+<span id="cb111-14"><a href="redes-neuronales-recurrentes.html#cb111-14" tabindex="-1"></a><span class="co"># Crear índices para las filas de entrenamiento</span></span>
+<span id="cb111-15"><a href="redes-neuronales-recurrentes.html#cb111-15" tabindex="-1"></a>train_indices_jor <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>num_filas_jor, <span class="at">size =</span> num_train_jor, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><strong>Se crea la Red Neuronal Jordan y se entrena:</strong></p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="redes-neuronales-recurrentes.html#cb112-1" tabindex="-1"></a><span class="co"># se definen valores de entrada y salida de la red</span></span>
+<span id="cb112-2"><a href="redes-neuronales-recurrentes.html#cb112-2" tabindex="-1"></a>inputs2 <span class="ot">&lt;-</span> rnn_btc_jor[,<span class="dv">2</span><span class="sc">:</span><span class="dv">10</span>]</span>
+<span id="cb112-3"><a href="redes-neuronales-recurrentes.html#cb112-3" tabindex="-1"></a>outputs2 <span class="ot">&lt;-</span> rnn_btc_jor[,<span class="dv">1</span>]</span>
+<span id="cb112-4"><a href="redes-neuronales-recurrentes.html#cb112-4" tabindex="-1"></a></span>
+<span id="cb112-5"><a href="redes-neuronales-recurrentes.html#cb112-5" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">jordan</span>(</span>
+<span id="cb112-6"><a href="redes-neuronales-recurrentes.html#cb112-6" tabindex="-1"></a>  inputs2[train_indices_jor], </span>
+<span id="cb112-7"><a href="redes-neuronales-recurrentes.html#cb112-7" tabindex="-1"></a>  outputs2[train_indices_jor],</span>
+<span id="cb112-8"><a href="redes-neuronales-recurrentes.html#cb112-8" tabindex="-1"></a>  <span class="at">size=</span><span class="dv">4</span>, </span>
+<span id="cb112-9"><a href="redes-neuronales-recurrentes.html#cb112-9" tabindex="-1"></a>  <span class="at">learnFuncParams=</span><span class="fu">c</span>(<span class="fl">0.1</span>),</span>
+<span id="cb112-10"><a href="redes-neuronales-recurrentes.html#cb112-10" tabindex="-1"></a>  <span class="at">maxit =</span><span class="dv">5000</span></span>
+<span id="cb112-11"><a href="redes-neuronales-recurrentes.html#cb112-11" tabindex="-1"></a>  )</span></code></pre></div>
+<p>Se han solicitado cuatro capas ocultas y un factor de tasa de aprendizaje de 0.1.</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="redes-neuronales-recurrentes.html#cb113-1" tabindex="-1"></a><span class="fu">plotIterativeError</span>(fit2)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-301-1.png" width="672" /></p>
+<p>Se observa que el error también converge muy rápidamente hacia cero.</p>
+<p><strong>Se realiza predicción con los términos restantes de la serie:</strong></p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="redes-neuronales-recurrentes.html#cb114-1" tabindex="-1"></a><span class="co"># Convertir la salida a vector</span></span>
+<span id="cb114-2"><a href="redes-neuronales-recurrentes.html#cb114-2" tabindex="-1"></a>y<span class="ot">&lt;-</span><span class="fu">as.vector</span>(outputs2[<span class="sc">-</span>train_indices_jor])</span>
+<span id="cb114-3"><a href="redes-neuronales-recurrentes.html#cb114-3" tabindex="-1"></a></span>
+<span id="cb114-4"><a href="redes-neuronales-recurrentes.html#cb114-4" tabindex="-1"></a><span class="co"># Graficar los valores reales con título y etiquetas</span></span>
+<span id="cb114-5"><a href="redes-neuronales-recurrentes.html#cb114-5" tabindex="-1"></a><span class="fu">plot</span>(y, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb114-6"><a href="redes-neuronales-recurrentes.html#cb114-6" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Predicción con Jordan&quot;</span>,  </span>
+<span id="cb114-7"><a href="redes-neuronales-recurrentes.html#cb114-7" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Índice de Tiempo&quot;</span>,      </span>
+<span id="cb114-8"><a href="redes-neuronales-recurrentes.html#cb114-8" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Valor y&quot;</span>)</span>
+<span id="cb114-9"><a href="redes-neuronales-recurrentes.html#cb114-9" tabindex="-1"></a></span>
+<span id="cb114-10"><a href="redes-neuronales-recurrentes.html#cb114-10" tabindex="-1"></a><span class="co"># Generar predicciones</span></span>
+<span id="cb114-11"><a href="redes-neuronales-recurrentes.html#cb114-11" tabindex="-1"></a>pred2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit2, inputs2[<span class="sc">-</span>train_indices_jor])</span>
+<span id="cb114-12"><a href="redes-neuronales-recurrentes.html#cb114-12" tabindex="-1"></a></span>
+<span id="cb114-13"><a href="redes-neuronales-recurrentes.html#cb114-13" tabindex="-1"></a><span class="co"># Añadir las predicciones al gráfico en rojo</span></span>
+<span id="cb114-14"><a href="redes-neuronales-recurrentes.html#cb114-14" tabindex="-1"></a><span class="fu">lines</span>(pred2, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>)</span>
+<span id="cb114-15"><a href="redes-neuronales-recurrentes.html#cb114-15" tabindex="-1"></a></span>
+<span id="cb114-16"><a href="redes-neuronales-recurrentes.html#cb114-16" tabindex="-1"></a><span class="co"># Agregar una leyenda para distinguir entre valores reales y predicciones</span></span>
+<span id="cb114-17"><a href="redes-neuronales-recurrentes.html#cb114-17" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Valores Reales&quot;</span>, <span class="st">&quot;Predicción&quot;</span>), </span>
+<span id="cb114-18"><a href="redes-neuronales-recurrentes.html#cb114-18" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-302-1.png" width="672" /></p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="redes-neuronales-recurrentes.html#cb115-1" tabindex="-1"></a><span class="co"># Métricas de las series</span></span>
+<span id="cb115-2"><a href="redes-neuronales-recurrentes.html#cb115-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Coeficiente de correlación&quot;</span>, <span class="fu">cor</span>(outputs2[<span class="sc">-</span>train_indices_jor], pred2)<span class="sc">^</span><span class="dv">2</span>, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## Coeficiente de correlación 0.9984554</code></pre>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="redes-neuronales-recurrentes.html#cb117-1" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;Error cuadrático medio&quot;</span>, <span class="fu">mean</span>((outputs2[<span class="sc">-</span>train_indices_jor] <span class="sc">-</span> pred2)<span class="sc">^</span><span class="dv">2</span>), <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## Error cuadrático medio 0.001466731</code></pre>
+<p>Se observa que la predicción sobre la serie original en este caso también es buena, incluso un poco mejor que la predicción con Elman, lo que se soporta con un mayor coeficiente de correlación y un menor error cuadrático medio, sin embargo, esto puede deberse a diferencias en los hiperparámetros utilizados; los hiperparámetros como el tamaño de las capas ocultas, la tasa de aprendizaje y el número de iteracciones han sido más adecuados para el modelo de Jordan en este caso específico. Adicional, las redes Jordan, al utilizar la salida como contexto recurrente, pueden captar patrones diferentes en los datos, lo que podría darles una ventaja en ciertas configuraciones.</p>
+</div>
+</div>
+<div style="text-align: justify">
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="modelos-de-regresión.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusiones.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["volatilidad_bitcoin.pdf", "volatilidad_bitcoin.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

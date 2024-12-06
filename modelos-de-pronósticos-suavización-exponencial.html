@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 4 Modelos de Pronósticos (Suavización Exponencial) | Series de Tiempo - Volatilidad Precio Bitcoin</title>
+  <meta name="description" content="Análisis de Series de Tiempo." />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 4 Modelos de Pronósticos (Suavización Exponencial) | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Análisis de Series de Tiempo." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 4 Modelos de Pronósticos (Suavización Exponencial) | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  
+  <meta name="twitter:description" content="Análisis de Series de Tiempo." />
+  
+
+
+
+<meta name="date" content="2024-12-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="preprocesamiento-y-visualización.html"/>
+<link rel="next" href="modelos-estacionarios.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Propuesta Bookdown</a></li>
+<li class="chapter" data-level="2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html"><i class="fa fa-check"></i><b>2</b> Estructura de datos</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#promedio-móvil"><i class="fa fa-check"></i><b>2.1</b> Promedio Móvil</a></li>
+<li class="chapter" data-level="2.2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#rezagos-lag"><i class="fa fa-check"></i><b>2.2</b> Rezagos (Lag)</a></li>
+<li class="chapter" data-level="2.3" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#estacionalidad"><i class="fa fa-check"></i><b>2.3</b> Estacionalidad</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html"><i class="fa fa-check"></i><b>3</b> Preprocesamiento y Visualización</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#descomposición"><i class="fa fa-check"></i><b>3.1</b> Descomposición</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#estacionariedad"><i class="fa fa-check"></i><b>3.2</b> Estacionariedad</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#diferenciación"><i class="fa fa-check"></i><b>3.3</b> Diferenciación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html"><i class="fa fa-check"></i><b>4</b> Modelos de Pronósticos (Suavización Exponencial)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#suavización-exponencial-simple"><i class="fa fa-check"></i><b>4.1</b> Suavización Exponencial Simple</a></li>
+<li class="chapter" data-level="4.2" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt"><i class="fa fa-check"></i><b>4.2</b> Modelo de Holt</a></li>
+<li class="chapter" data-level="4.3" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt-winters"><i class="fa fa-check"></i><b>4.3</b> Modelo de Holt-Winters</a></li>
+<li class="chapter" data-level="4.4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#resumen-de-métricas"><i class="fa fa-check"></i><b>4.4</b> Resumen de Métricas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html"><i class="fa fa-check"></i><b>5</b> Modelos Estacionarios</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-auto"><i class="fa fa-check"></i><b>5.1</b> Modelo ARIMA (Auto)</a></li>
+<li class="chapter" data-level="5.2" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-manual"><i class="fa fa-check"></i><b>5.2</b> Modelo ARIMA (Manual)</a></li>
+<li class="chapter" data-level="5.3" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#comparación-de-modelos"><i class="fa fa-check"></i><b>5.3</b> Comparación de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html"><i class="fa fa-check"></i><b>6</b> Modelos de Regresión</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#modelo-prophet"><i class="fa fa-check"></i><b>6.1</b> Modelo Prophet</a></li>
+<li class="chapter" data-level="6.2" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#comparación-con-arima-y-ets"><i class="fa fa-check"></i><b>6.2</b> Comparación con ARIMA y ETS</a></li>
+<li class="chapter" data-level="6.3" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#selección-del-mejor-modelo"><i class="fa fa-check"></i><b>6.3</b> Selección del mejor modelo</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html"><i class="fa fa-check"></i><b>7</b> Redes Neuronales Recurrentes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#elman-neural-networks"><i class="fa fa-check"></i><b>7.1</b> Elman Neural Networks</a></li>
+<li class="chapter" data-level="7.2" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#jordan-neural-networks"><i class="fa fa-check"></i><b>7.2</b> Jordan Neural Networks</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>8</b> Conclusiones</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="modelos-de-pronósticos-suavización-exponencial" class="section level1 hasAnchor" style="text-align: justify" number="4">
+<h1><span class="header-section-number">Capítulo 4</span> Modelos de Pronósticos (Suavización Exponencial)<a href="modelos-de-pronósticos-suavización-exponencial.html#modelos-de-pronósticos-suavización-exponencial" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Los modelos de pronóstico para series de tiempo son herramientas estadísticas que permiten anticipar valores futuros de una serie de datos a partir de sus registros históricos. Estas técnicas son esenciales en contextos donde los datos muestran fluctuaciones temporales y patrones que favorecen las proyecciones, como ocurre en activos financieros volátiles como Bitcoin.</p>
+<p>En este apartado se trabajará con la serie original, dado que, cuando se realizó la diferenciación a la serie, se eliminó la tendencia y disminuyó la estacionalidad, componentes que son necesarios para poder trabajar con modelos de suavización exponencial, que son <strong>no estacionarios</strong>, mientras que la serie diferenciada es más apta para <strong>modelos estacionarios</strong>.</p>
+<p>Cabe resaltar que, el pronóstico con suavización exponencial, asigna un mayor peso a los datos más recientes, atenuando la influencia de los datos más antiguos, lo que permite captar los patrones actuales sin depender en exceso de las observaciones históricas más lejanas. Los pronósticos se realizarán por los siguientes 10 días y manejando un intervalo de confianza del 95%.</p>
+<div id="suavización-exponencial-simple" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Suavización Exponencial Simple<a href="modelos-de-pronósticos-suavización-exponencial.html#suavización-exponencial-simple" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Este modelo solo considera el nivel de la serie, es decir, el valor promedio reciente, ajustado con mayor peso a los valores más recientes. No tiene en cuenta la tendencia ni la estacionalidad, por lo que asume que la serie fluctúa alrededor de un valor constante.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-1" tabindex="-1"></a><span class="co"># Configurar la semilla para reproducibilidad</span></span>
+<span id="cb36-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb36-3"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-3" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-4" tabindex="-1"></a><span class="co"># Ajusta el modelo de suavización exponencial simple</span></span>
+<span id="cb36-5"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-5" tabindex="-1"></a>ses_btc <span class="ot">&lt;-</span> <span class="fu">ses</span>(btc_ts, <span class="at">h =</span> <span class="dv">10</span>, <span class="at">level =</span> <span class="dv">95</span>)</span>
+<span id="cb36-6"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-6" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-7" tabindex="-1"></a><span class="co"># Graficar el pronóstico</span></span>
+<span id="cb36-8"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-8" tabindex="-1"></a><span class="fu">plot</span>(ses_btc, <span class="at">main =</span> <span class="st">&quot;Pronóstico de Suavización Exponencial Simple&quot;</span>,</span>
+<span id="cb36-9"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-9" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Tiempo&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Valor&quot;</span>, <span class="at">col =</span> <span class="st">&quot;yellow&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span>
+<span id="cb36-10"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-10" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-11" tabindex="-1"></a><span class="co"># Añadir leyenda</span></span>
+<span id="cb36-12"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-12" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;top&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Datos Observados&quot;</span>, <span class="st">&quot;Pronóstico Días SES&quot;</span>, <span class="st">&quot;Intervalo de Confianza 95%&quot;</span>),</span>
+<span id="cb36-13"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb36-13" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;grey&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">cex =</span> <span class="fl">0.7</span>, <span class="at">horiz =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-268-1.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb37-1" tabindex="-1"></a><span class="co"># Mostrar los valores de pronóstico de SES y los intervalos de confianza</span></span>
+<span id="cb37-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb37-2" tabindex="-1"></a><span class="fu">print</span>(ses_btc)</span></code></pre></div>
+<pre><code>##           Point Forecast    Lo 95    Hi 95
+## 2024.9205        97250.1 94429.26 100070.9
+## 2024.9233        97250.1 93334.56 101165.6
+## 2024.9260        97250.1 92485.04 102015.2
+## 2024.9288        97250.1 91765.57 102734.6
+## 2024.9315        97250.1 91130.10 103370.1
+## 2024.9342        97250.1 90554.68 103945.5
+## 2024.9370        97250.1 90024.93 104475.3
+## 2024.9397        97250.1 89531.46 104968.7
+## 2024.9425        97250.1 89067.70 105432.5
+## 2024.9452        97250.1 88628.85 105871.4</code></pre>
+<p>Se observa que la predicción es una línea horizontal, dado que asume que no hay crecimiento ni cambio estacional. En consecuencia, el modelo SES proyecta los valores futuros considerando únicamente el nivel de la serie, por lo cual puede resultar en predicciones similares para todos los períodos si no existen cambios significativos en los datos recientes. En este caso la proyección refleja valores aproximados homogéneos en USD 97,250.1 debido a la naturaleza del SES y la suavización empleada.</p>
+</div>
+<div id="modelo-de-holt" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Modelo de Holt<a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Conocido como <strong>suavización exponencial doble</strong>, se basa en un enfoque para el pronóstico de series de tiempo que maneja componentes de nivel y tendencia. Su atractivo radica en su capacidad de capturar la tendencia, a través de un segundo componente en la serie. Esto permite al modelo ajustarse a series que muestran una dirección (crecimiento o decrecimiento) a lo largo del tiempo.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-1" tabindex="-1"></a><span class="co"># Configurar la semilla para reproducibilidad</span></span>
+<span id="cb39-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb39-3"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-3" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-4" tabindex="-1"></a><span class="co"># Aplicar modelo de Holt con IC del 95%</span></span>
+<span id="cb39-5"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-5" tabindex="-1"></a>holt_model <span class="ot">&lt;-</span> <span class="fu">holt</span>(btc_ts, <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">95</span>))</span>
+<span id="cb39-6"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-6" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-7" tabindex="-1"></a><span class="co"># Realizar el pronóstico para los próximos 10 periodos</span></span>
+<span id="cb39-8"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-8" tabindex="-1"></a>forecasted_values <span class="ot">&lt;-</span> <span class="fu">forecast</span>(holt_model, <span class="at">h =</span> <span class="dv">10</span>)</span>
+<span id="cb39-9"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-9" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-10" tabindex="-1"></a><span class="co"># Graficar la serie observada y el pronóstico</span></span>
+<span id="cb39-11"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-11" tabindex="-1"></a><span class="fu">plot</span>(forecasted_values, <span class="at">main =</span> <span class="st">&quot;Pronóstico de Holt&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Time&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Valor&quot;</span>, <span class="at">col =</span> <span class="st">&quot;green&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span>
+<span id="cb39-12"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-12" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-13" tabindex="-1"></a><span class="co"># Añadir leyenda</span></span>
+<span id="cb39-14"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-14" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;top&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Datos Observados&quot;</span>, <span class="st">&quot;Pronóstico Días Holt&quot;</span>, <span class="st">&quot;Intervalo de Confianza 95%&quot;</span>),</span>
+<span id="cb39-15"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb39-15" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;green&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;grey&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">cex =</span> <span class="fl">0.7</span>, <span class="at">horiz =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-270-1.png" width="672" /></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb40-1" tabindex="-1"></a><span class="co"># Mostrar los valores de pronóstico de Holt y los intervalos de confianza</span></span>
+<span id="cb40-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb40-2" tabindex="-1"></a><span class="fu">print</span>(forecasted_values)</span></code></pre></div>
+<pre><code>##           Point Forecast    Lo 95    Hi 95
+## 2024.9205       97767.47 94923.23 100611.7
+## 2024.9233       98268.29 94299.34 102237.2
+## 2024.9260       98769.11 93891.76 103646.5
+## 2024.9288       99269.93 93594.85 104945.0
+## 2024.9315       99770.75 93366.42 106175.1
+## 2024.9342      100271.57 93184.68 107358.5
+## 2024.9370      100772.39 93036.68 108508.1
+## 2024.9397      101273.21 92914.03 109632.4
+## 2024.9425      101774.03 92810.95 110737.1
+## 2024.9452      102274.85 92723.25 111826.4</code></pre>
+<p>Observando los valores pronosticados, parece haber una ligera tendencia ascendente en los próximos periodos, donde el valor pronosticado va aumentando del primer día al décimo día. Para el primer pronóstico se encuentra que, dadas las condiciones y el comportamiento histórico de la serie, con un nivel de confianza del 95%, el valor del activo es poco probable que caiga por debajo de aproximadamente USD 94,923.23 o supere USD 100,611.7.</p>
+<p>Por otra parte, la gran amplitud del intervalo de confianza indica que el pronóstico es altamente incierto. Esto refleja la naturaleza volátil de la serie diferenciada de Bitcoin, donde los datos fluctúan continuamente y el modelo tiene dificultades para capturar patrones predecibles. Esto también se debe a que el modelo de Holt no asume una relación directa entre el nivel de la serie y la variabilidad futura.</p>
+<p>Como complemento es necesario destacar que, en este tipo de modelos, la incertidumbre se acumula en el tiempo de manera que los intervalos de confianza tienden a expandirse conforme se proyecta hacia adelante. Esto significa que el rango de los intervalos aumenta con el horizonte de predicción, pero no en proporción directa al nivel estimado.</p>
+</div>
+<div id="modelo-de-holt-winters" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> Modelo de Holt-Winters<a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt-winters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Conocido como <strong>suavización exponencial triple</strong>, contempla componentes de nivel, tendencia y estacionalidad. Su atractivo radica en su capacidad de capturar la estacionalidad, a través de un tercer componente en la serie.</p>
+<p>Ahora, se proede con la generación del modelo de <strong>Holt-Winters completo,</strong> en este caso el aditivio, que es adecuado para series con estacionalidad de magnitud constante.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb42-1" tabindex="-1"></a><span class="co"># Configurar la semilla para reproducibilidad</span></span>
+<span id="cb42-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb42-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb42-3"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb42-3" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb42-4" tabindex="-1"></a><span class="co"># Aplicar el modelo Holt-Winters aditivo</span></span>
+<span id="cb42-5"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb42-5" tabindex="-1"></a>hw_additive_model <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(btc_ts, <span class="at">seasonal =</span> <span class="st">&quot;additive&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in HoltWinters(btc_ts, seasonal = &quot;additive&quot;): optimization difficulties: ERROR:
+## ABNORMAL_TERMINATION_IN_LNSRCH</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-1" tabindex="-1"></a><span class="co"># Realizar el pronóstico para los próximos 10 periodos</span></span>
+<span id="cb44-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-2" tabindex="-1"></a>forecasted_values_additive <span class="ot">&lt;-</span> <span class="fu">forecast</span>(hw_additive_model, <span class="at">h =</span> <span class="dv">10</span>, <span class="at">level =</span> <span class="dv">95</span>)</span>
+<span id="cb44-3"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-3" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-4" tabindex="-1"></a><span class="co"># Graficar la serie observada y el pronóstico con intervalos de confianza</span></span>
+<span id="cb44-5"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-5" tabindex="-1"></a><span class="fu">plot</span>(forecasted_values_additive, <span class="at">main =</span> <span class="st">&quot;Pronóstico de Holt-Winters Aditivo&quot;</span>, </span>
+<span id="cb44-6"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-6" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Tiempo&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;Valor&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lwd =</span> <span class="dv">1</span>)</span>
+<span id="cb44-7"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-7" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-8" tabindex="-1"></a><span class="co"># Añadir leyenda</span></span>
+<span id="cb44-9"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-9" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;top&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Datos Observados&quot;</span>, <span class="st">&quot;Pronóstico Días Holt-Winters&quot;</span>, <span class="st">&quot;Intervalo de Confianza 95%&quot;</span>),</span>
+<span id="cb44-10"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb44-10" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;blue&quot;</span>, <span class="st">&quot;grey&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>), <span class="at">cex =</span> <span class="fl">0.7</span>, <span class="at">horiz =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-272-1.png" width="672" /></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb45-1" tabindex="-1"></a><span class="co"># Mostrar los valores de pronóstico de Holt y los intervalos de confianza</span></span>
+<span id="cb45-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb45-2" tabindex="-1"></a><span class="fu">print</span>(forecasted_values_additive)</span></code></pre></div>
+<pre><code>##           Point Forecast    Lo 95     Hi 95
+## 2024.9205       95000.67 91653.51  98347.83
+## 2024.9233       91698.81 87358.24  96039.37
+## 2024.9260       90697.60 85547.69  95847.50
+## 2024.9288       90947.06 85095.01  96799.11
+## 2024.9315       91219.24 84737.29  97701.20
+## 2024.9342       91576.05 84517.07  98635.04
+## 2024.9370       89506.88 81911.67  97102.10
+## 2024.9397       88693.09 80594.33  96791.84
+## 2024.9425       89511.00 80935.62  98086.37
+## 2024.9452       90991.66 81962.32 100021.01</code></pre>
+<p>El pronóstico muestra una tendencia ligeramente descendente, en concordancia con el comportamiento reciente de la serie. Esto podría indicar que el modelo de Holt-Winters está captando una posible estabilización o ligera reducción en los precios en los próximos periodos, reflejando el comportamiento de corto plazo observado al final de la serie histórica.</p>
+<p>Para el primer periodo proyectado, el intervalo de confianza del 95% se encuentra aproximadamente entre USD 91,653.51 y USD 98,347.83. Esto significa que, con un 95% de confianza, se espera que el valor real del activo caiga dentro de este rango, proporcionando un margen de variabilidad para el valor futuro.</p>
+<p>Además, los amplios intervalos de confianza reflejan la naturaleza volátil de la serie de tiempo. Estos intervalos muestran una considerable incertidumbre en las proyecciones futuras, lo que es típico en series con alta variabilidad como esta. La amplitud de los intervalos se incrementa a medida que avanza el horizonte de pronóstico, lo que indica que la confianza en las proyecciones disminuye en periodos más lejanos debido a la acumulación de error en el tiempo.</p>
+</div>
+<div id="resumen-de-métricas" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> Resumen de Métricas<a href="modelos-de-pronósticos-suavización-exponencial.html#resumen-de-métricas" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La elección del tipo de suavización exponencial depende de la estructura de la serie de tiempo, y de los resultados obtenidos al evaluar las métricas de precisión para determinar su efectividad.</p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb47-1" tabindex="-1"></a><span class="co"># Ajustar los modelos</span></span>
+<span id="cb47-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb47-2" tabindex="-1"></a>ses_model <span class="ot">&lt;-</span> <span class="fu">ses</span>(btc_ts, <span class="at">h =</span> <span class="dv">5</span>, <span class="at">level =</span> <span class="dv">95</span>) </span>
+<span id="cb47-3"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb47-3" tabindex="-1"></a>holt_model <span class="ot">&lt;-</span> <span class="fu">holt</span>(btc_ts, <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">95</span>))</span>
+<span id="cb47-4"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb47-4" tabindex="-1"></a>hw_additive_model <span class="ot">&lt;-</span> <span class="fu">HoltWinters</span>(btc_ts, <span class="at">seasonal =</span> <span class="st">&quot;additive&quot;</span>)</span></code></pre></div>
+<pre><code>## Warning in HoltWinters(btc_ts, seasonal = &quot;additive&quot;): optimization difficulties: ERROR:
+## ABNORMAL_TERMINATION_IN_LNSRCH</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-1" tabindex="-1"></a><span class="co"># Calcular las métricas de precisión para cada modelo</span></span>
+<span id="cb49-2"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-2" tabindex="-1"></a>metrics_ses <span class="ot">&lt;-</span> forecast<span class="sc">::</span><span class="fu">accuracy</span>(ses_model<span class="sc">$</span>fitted, diff_btc)</span>
+<span id="cb49-3"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-3" tabindex="-1"></a>metrics_holt <span class="ot">&lt;-</span> forecast<span class="sc">::</span><span class="fu">accuracy</span>(holt_model<span class="sc">$</span>fitted, diff_btc)</span>
+<span id="cb49-4"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-4" tabindex="-1"></a>metrics_hw_additive <span class="ot">&lt;-</span> forecast<span class="sc">::</span><span class="fu">accuracy</span>(hw_additive_model<span class="sc">$</span>fitted[,<span class="dv">1</span>], diff_btc)</span>
+<span id="cb49-5"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-5" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-6" tabindex="-1"></a><span class="co"># Extraer y mostrar las métricas importantes para cada modelo</span></span>
+<span id="cb49-7"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-7" tabindex="-1"></a>ses_metrics <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb49-8"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-8" tabindex="-1"></a>  <span class="at">Model =</span> <span class="st">&quot;SES&quot;</span>,</span>
+<span id="cb49-9"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-9" tabindex="-1"></a>  <span class="at">MAE =</span> metrics_ses[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;MAE&quot;</span>],</span>
+<span id="cb49-10"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-10" tabindex="-1"></a>  <span class="at">RMSE =</span> metrics_ses[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;RMSE&quot;</span>],</span>
+<span id="cb49-11"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-11" tabindex="-1"></a>  <span class="at">MAPE =</span> metrics_ses[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;MAPE&quot;</span>],</span>
+<span id="cb49-12"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-12" tabindex="-1"></a>  <span class="at">ACF1 =</span> metrics_ses[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;ACF1&quot;</span>],</span>
+<span id="cb49-13"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-13" tabindex="-1"></a>  <span class="at">TheilsU =</span> metrics_ses[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;Theil&#39;s U&quot;</span>]</span>
+<span id="cb49-14"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-14" tabindex="-1"></a>)</span>
+<span id="cb49-15"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-15" tabindex="-1"></a>holt_metrics <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb49-16"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-16" tabindex="-1"></a>  <span class="at">Model =</span> <span class="st">&quot;Holt&quot;</span>,</span>
+<span id="cb49-17"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-17" tabindex="-1"></a>  <span class="at">MAE =</span> metrics_holt[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;MAE&quot;</span>],</span>
+<span id="cb49-18"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-18" tabindex="-1"></a>  <span class="at">RMSE =</span> metrics_holt[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;RMSE&quot;</span>],</span>
+<span id="cb49-19"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-19" tabindex="-1"></a>  <span class="at">MAPE =</span> metrics_holt[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;MAPE&quot;</span>],</span>
+<span id="cb49-20"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-20" tabindex="-1"></a>  <span class="at">ACF1 =</span> metrics_holt[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;ACF1&quot;</span>],</span>
+<span id="cb49-21"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-21" tabindex="-1"></a>  <span class="at">TheilsU =</span> metrics_holt[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;Theil&#39;s U&quot;</span>]</span>
+<span id="cb49-22"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-22" tabindex="-1"></a>)</span>
+<span id="cb49-23"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-23" tabindex="-1"></a>hw_additive_metrics <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb49-24"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-24" tabindex="-1"></a>  <span class="at">Model =</span> <span class="st">&quot;Holt-Winters Additive&quot;</span>,</span>
+<span id="cb49-25"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-25" tabindex="-1"></a>  <span class="at">MAE =</span> metrics_hw_additive[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;MAE&quot;</span>],</span>
+<span id="cb49-26"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-26" tabindex="-1"></a>  <span class="at">RMSE =</span> metrics_hw_additive[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;RMSE&quot;</span>],</span>
+<span id="cb49-27"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-27" tabindex="-1"></a>  <span class="at">MAPE =</span> metrics_hw_additive[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;MAPE&quot;</span>],</span>
+<span id="cb49-28"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-28" tabindex="-1"></a>  <span class="at">ACF1 =</span> metrics_hw_additive[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;ACF1&quot;</span>],</span>
+<span id="cb49-29"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-29" tabindex="-1"></a>  <span class="at">TheilsU =</span> metrics_hw_additive[<span class="st">&quot;Test set&quot;</span>, <span class="st">&quot;Theil&#39;s U&quot;</span>]</span>
+<span id="cb49-30"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-30" tabindex="-1"></a>)</span>
+<span id="cb49-31"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-31" tabindex="-1"></a></span>
+<span id="cb49-32"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-32" tabindex="-1"></a><span class="co"># Combina los resultados en una tabla</span></span>
+<span id="cb49-33"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-33" tabindex="-1"></a>all_metrics <span class="ot">&lt;-</span> <span class="fu">rbind</span>(ses_metrics, holt_metrics, hw_additive_metrics)</span>
+<span id="cb49-34"><a href="modelos-de-pronósticos-suavización-exponencial.html#cb49-34" tabindex="-1"></a><span class="fu">print</span>(all_metrics)</span></code></pre></div>
+<pre><code>##                   Model      MAE     RMSE     MAPE      ACF1  TheilsU
+## 1                   SES 41375.87 44796.25 51334.59 0.9786711 96.60984
+## 2                  Holt 41444.47 44894.46 51379.13 0.9787384 96.61733
+## 3 Holt-Winters Additive 39312.67 43491.04 60665.30 0.9837329 95.07895</code></pre>
+<p>El modelo Holt-Winters Aditivo tiene el menor error medio absoluto (MAE), lo que indica que, en promedio, es el que menos se desvía de los valores reales. De igual forma, presenta el menor error cuadrático medio (RMSE), lo que refuerza que este modelo tiene una mayor precisión al reducir el impacto de grandes errores en comparación con los otros modelos. Sin embargo, muestra un error porcentual absoluto medio (MAPE) más alto, lo que sugiere que, aunque es más preciso en términos absolutos, su desempeño es menos consistente cuando se observa en términos relativos (porcentuales), lo cual indica cierta variabilidad en su precisión.</p>
+<p>Además, todos los modelos presentan una alta autocorrelación en los errores (ACF1). Esto puede señalar que aún existe un patrón en los errores de predicción que no ha sido completamente captado por los modelos, lo cual podría afectar la calidad de las predicciones a lo largo del tiempo.</p>
+<p>Finalmente, todos los modelos muestran un valor alto en el índice de Theil’s U. En general, un valor de Theil’s U cercano a 0 indica un buen desempeño en comparación con un modelo de referencia (ingenuo), mientras que un valor cercano a uno, sugiere que el modelo de pronóstico podría no ser adecuado.</p>
+<p>Lo expuesto hasta aquí, indica que, el uso de modelos no estacionarios, como Holt, Holt-Winters y Suavización Exponencial Simple, en series altamente volátiles como la de Bitcoin presenta varios desafíos que limitan la precisión y consistencia de los pronósticos. Su dependencia de tendencias y suavización para hacer pronósticos a corto y mediano plazo es menos efectiva cuando el activo subyacente muestra comportamientos erráticos y cambios bruscos en el valor. Esto justifica por qué, aunque el modelo Holt-Winters Aditivo es el mejor en términos absolutos, su desempeño no es consistente ni óptimo en términos relativos para una serie tan impredecible.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="preprocesamiento-y-visualización.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="modelos-estacionarios.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["volatilidad_bitcoin.pdf", "volatilidad_bitcoin.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

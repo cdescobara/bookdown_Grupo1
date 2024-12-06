@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 5 Modelos Estacionarios | Series de Tiempo - Volatilidad Precio Bitcoin</title>
+  <meta name="description" content="Análisis de Series de Tiempo." />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 5 Modelos Estacionarios | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Análisis de Series de Tiempo." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 5 Modelos Estacionarios | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  
+  <meta name="twitter:description" content="Análisis de Series de Tiempo." />
+  
+
+
+
+<meta name="date" content="2024-12-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="modelos-de-pronósticos-suavización-exponencial.html"/>
+<link rel="next" href="modelos-de-regresión.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Propuesta Bookdown</a></li>
+<li class="chapter" data-level="2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html"><i class="fa fa-check"></i><b>2</b> Estructura de datos</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#promedio-móvil"><i class="fa fa-check"></i><b>2.1</b> Promedio Móvil</a></li>
+<li class="chapter" data-level="2.2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#rezagos-lag"><i class="fa fa-check"></i><b>2.2</b> Rezagos (Lag)</a></li>
+<li class="chapter" data-level="2.3" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#estacionalidad"><i class="fa fa-check"></i><b>2.3</b> Estacionalidad</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html"><i class="fa fa-check"></i><b>3</b> Preprocesamiento y Visualización</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#descomposición"><i class="fa fa-check"></i><b>3.1</b> Descomposición</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#estacionariedad"><i class="fa fa-check"></i><b>3.2</b> Estacionariedad</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#diferenciación"><i class="fa fa-check"></i><b>3.3</b> Diferenciación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html"><i class="fa fa-check"></i><b>4</b> Modelos de Pronósticos (Suavización Exponencial)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#suavización-exponencial-simple"><i class="fa fa-check"></i><b>4.1</b> Suavización Exponencial Simple</a></li>
+<li class="chapter" data-level="4.2" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt"><i class="fa fa-check"></i><b>4.2</b> Modelo de Holt</a></li>
+<li class="chapter" data-level="4.3" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt-winters"><i class="fa fa-check"></i><b>4.3</b> Modelo de Holt-Winters</a></li>
+<li class="chapter" data-level="4.4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#resumen-de-métricas"><i class="fa fa-check"></i><b>4.4</b> Resumen de Métricas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html"><i class="fa fa-check"></i><b>5</b> Modelos Estacionarios</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-auto"><i class="fa fa-check"></i><b>5.1</b> Modelo ARIMA (Auto)</a></li>
+<li class="chapter" data-level="5.2" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-manual"><i class="fa fa-check"></i><b>5.2</b> Modelo ARIMA (Manual)</a></li>
+<li class="chapter" data-level="5.3" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#comparación-de-modelos"><i class="fa fa-check"></i><b>5.3</b> Comparación de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html"><i class="fa fa-check"></i><b>6</b> Modelos de Regresión</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#modelo-prophet"><i class="fa fa-check"></i><b>6.1</b> Modelo Prophet</a></li>
+<li class="chapter" data-level="6.2" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#comparación-con-arima-y-ets"><i class="fa fa-check"></i><b>6.2</b> Comparación con ARIMA y ETS</a></li>
+<li class="chapter" data-level="6.3" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#selección-del-mejor-modelo"><i class="fa fa-check"></i><b>6.3</b> Selección del mejor modelo</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html"><i class="fa fa-check"></i><b>7</b> Redes Neuronales Recurrentes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#elman-neural-networks"><i class="fa fa-check"></i><b>7.1</b> Elman Neural Networks</a></li>
+<li class="chapter" data-level="7.2" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#jordan-neural-networks"><i class="fa fa-check"></i><b>7.2</b> Jordan Neural Networks</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>8</b> Conclusiones</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="modelos-estacionarios" class="section level1 hasAnchor" style="text-align: justify" number="5">
+<h1><span class="header-section-number">Capítulo 5</span> Modelos Estacionarios<a href="modelos-estacionarios.html#modelos-estacionarios" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Los modelos estacionarios desempeñan un papel crucial en el análisis de series temporales. Una serie temporal se clasifica como estacionaria cuando sus propiedades estadísticas, como la media, la varianza y la autocorrelación, permanecen constantes a lo largo del tiempo. En los modelos estacionarios, las relaciones entre puntos en el tiempo son consistentes, lo que permite predecir con mayor precisión futuros valores basados en el pasado. Esto es crucial en aplicaciones como finanzas.</p>
+<div id="modelo-arima-auto" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Modelo ARIMA (Auto)<a href="modelos-estacionarios.html#modelo-arima-auto" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>La metodología Box-Jenkins se utiliza para construir modelos ARIMA (p,d,q), que contiene componentes AR (Autoregresivo), I (Integrado) y MA (Media Móvil):</p>
+<p><strong>Visualización de la serie:</strong> Ayuda a decidir si es necesario transformar la serie para estabilizar su varianza o hacerla estacionaria.</p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="modelos-estacionarios.html#cb51-1" tabindex="-1"></a><span class="co"># Graficar la serie</span></span>
+<span id="cb51-2"><a href="modelos-estacionarios.html#cb51-2" tabindex="-1"></a><span class="fu">plot</span>(btc_ts, <span class="at">main =</span> <span class="st">&quot;Serie Precio Bitcoin&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;USD&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Tiempo&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span>
+<span id="cb51-3"><a href="modelos-estacionarios.html#cb51-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">reg =</span> <span class="fu">lm</span>(btc_ts <span class="sc">~</span> <span class="fu">time</span>(btc_ts)), <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-275-1.png" width="672" /></p>
+<p>Se observa que la amplitud de las oscilaciones aumenta con el nivel de la serie, lo que supone que la varianza no es constante. Adicional, se observa una tendencia ascendente en el precio y posibles ciclos repetitivos, razón por la cual se sugiere realizar una transformación logarítmica.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="modelos-estacionarios.html#cb52-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">log</span>(btc_ts),<span class="at">main=</span><span class="st">&quot;Precio Bitcoin&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Tiempo&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;log (USD)&quot;</span>, <span class="at">col =</span> <span class="st">&quot;brown&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span>
+<span id="cb52-2"><a href="modelos-estacionarios.html#cb52-2" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-276-1.png" width="672" /></p>
+<p><strong>Transformación en Estacionaria:</strong> La estacionariedad se refiere a una característica de un proceso estocástico en la que las propiedades estadísticas del proceso no cambian con el tiempo.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="modelos-estacionarios.html#cb53-1" tabindex="-1"></a><span class="co"># Guardar nuevo vector con log</span></span>
+<span id="cb53-2"><a href="modelos-estacionarios.html#cb53-2" tabindex="-1"></a>btc_ts_log <span class="ot">&lt;-</span> <span class="fu">log</span>(btc_ts)</span>
+<span id="cb53-3"><a href="modelos-estacionarios.html#cb53-3" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="modelos-estacionarios.html#cb53-4" tabindex="-1"></a><span class="co"># Diferenciar la serie</span></span>
+<span id="cb53-5"><a href="modelos-estacionarios.html#cb53-5" tabindex="-1"></a>diff_btc2 <span class="ot">&lt;-</span> <span class="fu">diff</span>(btc_ts_log)</span>
+<span id="cb53-6"><a href="modelos-estacionarios.html#cb53-6" tabindex="-1"></a></span>
+<span id="cb53-7"><a href="modelos-estacionarios.html#cb53-7" tabindex="-1"></a><span class="co"># Graficar la serie diferenciada del logaritmo</span></span>
+<span id="cb53-8"><a href="modelos-estacionarios.html#cb53-8" tabindex="-1"></a><span class="fu">plot</span>(diff_btc2, <span class="at">main =</span> <span class="st">&quot;Serie Diferenciada del Precio Bitcoin&quot;</span>, </span>
+<span id="cb53-9"><a href="modelos-estacionarios.html#cb53-9" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Diferencias&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Tiempo&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-277-1.png" width="672" /></p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="modelos-estacionarios.html#cb54-1" tabindex="-1"></a><span class="co"># Verificar estacionariedad tras la diferenciación</span></span>
+<span id="cb54-2"><a href="modelos-estacionarios.html#cb54-2" tabindex="-1"></a><span class="fu">adf.test</span>(diff_btc2)</span></code></pre></div>
+<pre><code>## Warning in adf.test(diff_btc2): p-value smaller than printed p-value</code></pre>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  diff_btc2
+## Dickey-Fuller = -10.886, Lag order = 11, p-value = 0.01
+## alternative hypothesis: stationary</code></pre>
+<p>Se observa que el valor p de la prueba ADF es menor a 0.05 tras la diferenciación, entonces la serie diferenciada es estacionaria y está lista para modelar.</p>
+<p><strong>Identificación de Parámetros:</strong> Las funciones ACF y PACF ayudan a identificar los parámetros p (Autoregresivo) y q (Media Móvil).</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="modelos-estacionarios.html#cb57-1" tabindex="-1"></a><span class="co"># Graficar la ACF y PACF</span></span>
+<span id="cb57-2"><a href="modelos-estacionarios.html#cb57-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)) <span class="co"># Dividir la ventana gráfica</span></span>
+<span id="cb57-3"><a href="modelos-estacionarios.html#cb57-3" tabindex="-1"></a><span class="fu">acf</span>(diff_btc2, <span class="at">main =</span> <span class="st">&quot;ACF&quot;</span>) <span class="co"># Identificar q</span></span>
+<span id="cb57-4"><a href="modelos-estacionarios.html#cb57-4" tabindex="-1"></a><span class="fu">pacf</span>(diff_btc2, <span class="at">main =</span> <span class="st">&quot;PACF&quot;</span>) <span class="co"># Identificar p</span></span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-278-1.png" width="672" /></p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="modelos-estacionarios.html#cb58-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>)) <span class="co"># Restaurar la ventana gráfica</span></span></code></pre></div>
+<p>Los cortes en la ACF indican el orden q y los cortes en la PACF indican el orden p. Así, el gráfico ACF establece que, hay un corte significativo en el lag 1 y los demás valores están dentro de las bandas de confianza (parecen insignificantes). Esto indica un componente MA (q=1). Por su parte, también se observa un corte significativo en el lag 1, lo que indica la presencia de un componente AR (p=1). Ahora, como previamente se realizó una diferenciación, entonces se tiene que (d=0). Así, visualmente el modelo ARIMA sería (1,0,1)</p>
+<p><strong>Construcción del modelo:</strong> A través de la función autoarima, se obtendrá el modelo de ajuste y se comparará con el modelo visual.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="modelos-estacionarios.html#cb59-1" tabindex="-1"></a>modelo_arima_diff <span class="ot">&lt;-</span> <span class="fu">auto.arima</span>(diff_btc2)</span>
+<span id="cb59-2"><a href="modelos-estacionarios.html#cb59-2" tabindex="-1"></a><span class="fu">summary</span>(modelo_arima_diff)</span></code></pre></div>
+<pre><code>## Series: diff_btc2 
+## ARIMA(1,0,0) with zero mean 
+## 
+## Coefficients:
+##           ar1
+##       -0.0307
+## s.e.   0.0265
+## 
+## sigma^2 = 0.001059:  log likelihood = 2869.44
+## AIC=-5734.88   AICc=-5734.87   BIC=-5724.35
+## 
+## Training set error measures:
+##                        ME       RMSE        MAE      MPE     MAPE      MASE         ACF1
+## Training set 0.0008628861 0.03253173 0.02234498 97.01396 111.0288 0.6934362 0.0004402093</code></pre>
+<ul>
+<li><p>La función sugiere un modelo ARIMA(1,0,0): El modelo ajustado incluye un único término autoregresivo (p=1), no incluye componente de integración, dado que la serie fue diferenciada previamente (d=0), y no presenta un componente de media móvil (q=0). En otras palabras, la función indica que dada la naturaleza de los datos, el mejor modelo sería un modelo AR1 (AutoRegresivo).</p></li>
+<li><p>Un modelo AR(1) implica que el valor de la serie en el tiempo t depende principalmente de su valor en el tiempo t−1. El hecho de que no se incluya el término de media móvil (MA) sugiere que no hay una dependencia significativa entre los errores pasados, lo cual es común en series donde los choques o errores aleatorios no afectan significativamente a los valores futuros.</p></li>
+<li><p>El valor del coeficiente AR 1 es negativo, lo que indica una relación inversa entre el valor actual y el valor del período anterior, sin embargo, el coeficiente es muy pequeño, lo que sugiere que el efecto autoregresivo es débil.</p></li>
+<li><p>La significancia del coeficiente se evalúa con el valor t, aproximadamente: -0.0307/0.0265 = -1.15, como este valor t es &lt; 2, entonces el coeficiente no es estadísticamente significativo al nivel de confianza estándar 0.05</p></li>
+<li><p>La varianza de los residuos muestra un valor bajo.</p></li>
+<li><p>AIC es negativo, lo cual es una buena señal de ajuste (valores más bajos son mejores).</p></li>
+<li><p>BIC es negativo, similar al AIC, se usa para comparar modelos. Valores más bajos indican un mejor ajuste penalizando la complejidad.</p></li>
+</ul>
+<p>Por otra parte, las métricas se utilizan para evaluar el rendimiento del modelo en términos de la precisión del ajuste. Menores valores indican un mejor desempeño:</p>
+<ul>
+<li><p>El error medio es cercano a cero, significa que el modelo no tiene un sesgo sistemático en las predicciones, es decir, no subestima ni sobreestima de manera constante.</p></li>
+<li><p>El modelo tiene errores absolutos bajos (MAE), lo cual indica un buen ajuste.</p></li>
+<li><p>Los valores de MPE y MAPE son altos, lo que indica que el modelo no es completamente preciso en términos porcentuales. Esto podría deberse a una alta variabilidad en los datos originales o a la presencia de valores extremos.</p></li>
+<li><p>El MASE indica que el modelo es mejor que un modelo de referencia, lo cual es un buen indicador.</p></li>
+<li><p>La baja autocorrelación en los residuos (ACF1) respalda que el modelo ARIMA está capturando adecuadamente las dependencias temporales.</p></li>
+</ul>
+<p><strong>Diagnóstico del modelo ARIMA(1,0,0):</strong> Consiste en evaluar si el modelo captura adecuadamente las dinámicas de la serie temporal mediante el análisis de los residuos. Los residuos deben comportarse como un proceso de ruido blanco, es decir, ser independientes, no correlacionados, con media cero y varianza constante. Además, se debe verificar si están distribuidos aproximadamente de manera normal, lo que respalda la validez de las inferencias estadísticas del modelo.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="modelos-estacionarios.html#cb61-1" tabindex="-1"></a><span class="co"># Diagnóstico del modelo</span></span>
+<span id="cb61-2"><a href="modelos-estacionarios.html#cb61-2" tabindex="-1"></a><span class="fu">tsdiag</span>(modelo_arima_diff)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-280-1.png" width="672" /></p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="modelos-estacionarios.html#cb62-1" tabindex="-1"></a><span class="co"># Prueba de Ljung-Box</span></span>
+<span id="cb62-2"><a href="modelos-estacionarios.html#cb62-2" tabindex="-1"></a><span class="fu">Box.test</span>(<span class="fu">residuals</span>(modelo_arima_diff), <span class="at">lag =</span> <span class="dv">11</span>, <span class="at">type =</span> <span class="st">&quot;Ljung-Box&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Box-Ljung test
+## 
+## data:  residuals(modelo_arima_diff)
+## X-squared = 14.552, df = 11, p-value = 0.2039</code></pre>
+<p>Los residuos parecen oscilar alrededor de 0. No se observan patrones evidentes, lo cual es una buena señal, dado que sugiere que el modelo está capturando correctamente la estructura de la serie. Adicional, la mayoría de los puntos están dentro de las bandas de confianza (líneas azules), lo que indica que no hay autocorrelaciones significativas en los residuos.</p>
+<p>La gráfica de valores p, muestra que para la mayoría de los lags, los valores p están por encima del nivel de significancia de 0.05 (línea azul). Esto indica que no se puede rechazar la hipótesis nula de que los residuos son ruido blanco, lo cual se corrobora con el test Box-Ljung.</p>
+<p>En consencuencia, los residuos son independientes y no presentan correlación significativa, lo que valida el buen ajuste del modelo.</p>
+<p><strong>Predicciones:</strong> Consisten en utilizar el modelo ajustado para proyectar valores futuros de la serie temporal, basándose en las relaciones identificadas durante el ajuste. Las predicciones pueden incluir intervalos de confianza, que proporcionan una estimación del rango en el que es probable que se encuentren los valores futuros con un nivel de certeza especificado (por ejemplo, 95%).</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="modelos-estacionarios.html#cb64-1" tabindex="-1"></a><span class="co"># Pronóstico para los próximos 10 días</span></span>
+<span id="cb64-2"><a href="modelos-estacionarios.html#cb64-2" tabindex="-1"></a>pronostico <span class="ot">&lt;-</span> <span class="fu">forecast</span>(modelo_arima_diff, <span class="at">h =</span> <span class="dv">10</span>, <span class="at">level =</span> <span class="dv">95</span>)</span>
+<span id="cb64-3"><a href="modelos-estacionarios.html#cb64-3" tabindex="-1"></a></span>
+<span id="cb64-4"><a href="modelos-estacionarios.html#cb64-4" tabindex="-1"></a><span class="co"># Gráfico del pronóstico</span></span>
+<span id="cb64-5"><a href="modelos-estacionarios.html#cb64-5" tabindex="-1"></a><span class="fu">plot</span>(pronostico, </span>
+<span id="cb64-6"><a href="modelos-estacionarios.html#cb64-6" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Pronóstico Precios Bitcoin con auto.arima&quot;</span>,</span>
+<span id="cb64-7"><a href="modelos-estacionarios.html#cb64-7" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Tiempo&quot;</span>, </span>
+<span id="cb64-8"><a href="modelos-estacionarios.html#cb64-8" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Log Precio USD&quot;</span>)</span>
+<span id="cb64-9"><a href="modelos-estacionarios.html#cb64-9" tabindex="-1"></a></span>
+<span id="cb64-10"><a href="modelos-estacionarios.html#cb64-10" tabindex="-1"></a><span class="co"># Agregar una cuadrícula al gráfico</span></span>
+<span id="cb64-11"><a href="modelos-estacionarios.html#cb64-11" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-281-1.png" width="672" /></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="modelos-estacionarios.html#cb65-1" tabindex="-1"></a><span class="co"># Diagnóstico de residuos</span></span>
+<span id="cb65-2"><a href="modelos-estacionarios.html#cb65-2" tabindex="-1"></a><span class="fu">checkresiduals</span>(modelo_arima_diff)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-281-2.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(1,0,0) with zero mean
+## Q* = 287.44, df = 285, p-value = 0.4484
+## 
+## Model df: 1.   Total lags used: 286</code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="modelos-estacionarios.html#cb67-1" tabindex="-1"></a><span class="co"># Mostrar el pronóstico</span></span>
+<span id="cb67-2"><a href="modelos-estacionarios.html#cb67-2" tabindex="-1"></a>pronostico</span></code></pre></div>
+<pre><code>##           Point Forecast       Lo 95      Hi 95
+## 2024.9205  -2.632493e-04 -0.06404658 0.06352008
+## 2024.9233   8.080422e-06 -0.06380529 0.06382145
+## 2024.9260  -2.480281e-07 -0.06381365 0.06381315
+## 2024.9288   7.613206e-09 -0.06381339 0.06381341
+## 2024.9315  -2.336869e-10 -0.06381340 0.06381340
+## 2024.9342   7.173004e-12 -0.06381340 0.06381340
+## 2024.9370  -2.201749e-13 -0.06381340 0.06381340
+## 2024.9397   6.758255e-15 -0.06381340 0.06381340
+## 2024.9425  -2.074442e-16 -0.06381340 0.06381340
+## 2024.9452   6.367487e-18 -0.06381340 0.06381340</code></pre>
+<p>Los valores pronosticados y los intervalos de confianza muestran una tendencia a estabilizarse rápidamente. Esto sugiere que el modelo ARIMA(1,0,0) ha capturado una dinámica estacionaria en la serie temporal. En otras palabras, sugiere que la serie temporal ha alcanzado un nivel constante después de ser diferenciada, y no se espera una tendencia ascendente o descendente significativa.</p>
+<p>Aunque los valores pronosticados son cercanos a 0, los intervalos de confianza indican una variabilidad moderada, pero no grandes oscilaciones futuras.</p>
+<p>Este pronóstico confirma que la diferenciación del modelo ha eliminado cualquier tendencia, dejando una serie estacionaria alrededor de 0.</p>
+<p>Por otra parte, la ausencia de patrones persistentes sugiere que los residuos son independientes en el tiempo.</p>
+<p>La forma de la distribución de los residuos es aproximadamente simétrica y se asemeja a una distribución normal.</p>
+<p><strong>Normalidad en los residuos:</strong> El test de Shapiro-Wilk evalúa si los residuos de un modelo se distribuyen normalmente. Esto es importante porque uno de los supuestos básicos de los modelos ARIMA es que los errores (residuos) deben seguir una distribución normal con media cero y varianza constante.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="modelos-estacionarios.html#cb69-1" tabindex="-1"></a>residuales<span class="ot">&lt;-</span>modelo_arima_diff<span class="sc">$</span>residuals</span>
+<span id="cb69-2"><a href="modelos-estacionarios.html#cb69-2" tabindex="-1"></a><span class="fu">qqnorm</span>(residuales)</span>
+<span id="cb69-3"><a href="modelos-estacionarios.html#cb69-3" tabindex="-1"></a><span class="fu">qqline</span>(residuales)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-282-1.png" width="672" /></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="modelos-estacionarios.html#cb70-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(residuales)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuales
+## W = 0.94689, p-value &lt; 2.2e-16</code></pre>
+<p>Aunque el análisis gráfico mostró que la distribución de los residuos es aproximadamente simétrica y parece cercana a una normal, el test de Shapiro-Wilk detecta una desviación significativa de la normalidad, probablemente debido a la alta sensibilidad que presenta el test ante tamaños de muestra grandes.</p>
+<p>De todas formas, Si los residuos son ruido blanco y no tienen autocorrelación significativa (como lo confirmó el test de Ljung-Box), el modelo sigue siendo válido para predicción, incluso si los residuos no son perfectamente normales.</p>
+</div>
+<div id="modelo-arima-manual" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Modelo ARIMA (Manual)<a href="modelos-estacionarios.html#modelo-arima-manual" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Cuando se revisarón los cortes en la ACF y en la PACF, se sugirió un modelo ARIMA (1,0,1), por lo que ahora se evaluará la implementación del mismo, para medir su rendimiento en comparación con el modelo ARIMA (1,0,0).</p>
+<p><strong>Construcción del modelo:</strong> De forma visual se selecciona un modelo ARIMA(1,0,1).</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="modelos-estacionarios.html#cb72-1" tabindex="-1"></a>arima_model <span class="ot">&lt;-</span> <span class="fu">Arima</span>(diff_btc2, <span class="at">order =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb72-2"><a href="modelos-estacionarios.html#cb72-2" tabindex="-1"></a><span class="fu">summary</span>(arima_model)</span></code></pre></div>
+<pre><code>## Series: diff_btc2 
+## ARIMA(1,0,1) with non-zero mean 
+## 
+## Coefficients:
+##           ar1     ma1   mean
+##       -0.5367  0.5019  8e-04
+## s.e.   0.3178  0.3243  8e-04
+## 
+## sigma^2 = 0.001059:  log likelihood = 2870.47
+## AIC=-5732.93   AICc=-5732.9   BIC=-5711.87
+## 
+## Training set error measures:
+##                        ME       RMSE        MAE      MPE     MAPE      MASE        ACF1
+## Training set 2.450192e-06 0.03250836 0.02235837 97.98546 140.3593 0.6938518 0.004887155</code></pre>
+<ul>
+<li><p>El coeficiente AR(1) es negativo, lo que indica una relación inversa entre el valor actual y el valor del período anterior. Este valor sugiere que un aumento en t−1 tiende a estar asociado con una disminución en t. Como el coeficiente es moderadamente significativo, implica un efecto autoregresivo notable.</p></li>
+<li><p>El coeficiente MA(1) es positivo, indicando que el error del período anterior contribuye positivamente al valor actual. Este término refleja que el modelo está ajustando fluctuaciones no explicadas de manera razonable.</p></li>
+<li><p>La significancia de los coeficientes puede evaluarse con sus valores t, aproximadamente: Para AR(1): -0.5367/0.3178 = −1.68. Para MA(1): 0.5019/0.3423 = 1.46. Ambos valores t son menores a 2, lo que sugiere que los coeficientes no son estadísticamente significativos al nivel estándar p &gt; 0.05.</p></li>
+<li><p>La varianza de los residuos es baja, lo que indica que el modelo captura bien las fluctuaciones de los datos.</p></li>
+<li><p>Los valores de AIC y BIC son negativos, lo cual es una buena señal de ajuste. Estos valores bajos indican que el modelo tiene un buen equilibrio entre precisión del ajuste y complejidad del modelo.</p></li>
+</ul>
+<p>Por el lado de las métricas se tiene que:</p>
+<ul>
+<li><p>El error medio (ME) es muy cercano a cero, lo que implica que el modelo no presenta un sesgo sistemático en las predicciones, es decir, no subestima ni sobreestima de manera consistente.</p></li>
+<li><p>El modelo tiene un error absoluto bajo, lo que indica que las predicciones son precisas en términos absolutos.</p></li>
+<li><p>Los valores de Error porcentual medio y Error Porcentual Absoluto Medio - MPE y MAPE son altos, lo que sugiere que el modelo no es completamente preciso en términos porcentuales. Esto podría deberse a la naturaleza de los datos originales, que tal vez incluyen alta variabilidad o valores extremos.</p></li>
+<li><p>El Error Absoluto Escalado Medio - MASE indica que el modelo es mejor que un modelo de referencia basado en promedios simples, lo cual es un buen indicador del rendimiento.</p></li>
+<li><p>La autocorrelación en los errores es baja, lo que respalda que el modelo está capturando adecuadamente las dependencias temporales de la serie.</p></li>
+</ul>
+<p><strong>Diagnóstico del modelo ARIMA(1,0,1):</strong> Es importante verificar si los residuos del modelo se comportan como ruido blanco (independientes y distribuidos normalmente).</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="modelos-estacionarios.html#cb74-1" tabindex="-1"></a><span class="co"># Diagnóstico del modelo</span></span>
+<span id="cb74-2"><a href="modelos-estacionarios.html#cb74-2" tabindex="-1"></a><span class="fu">tsdiag</span>(arima_model)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-284-1.png" width="672" /></p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="modelos-estacionarios.html#cb75-1" tabindex="-1"></a><span class="co"># Prueba de Ljung-Box</span></span>
+<span id="cb75-2"><a href="modelos-estacionarios.html#cb75-2" tabindex="-1"></a><span class="fu">Box.test</span>(<span class="fu">residuals</span>(arima_model), <span class="at">lag =</span> <span class="dv">11</span>, <span class="at">type =</span> <span class="st">&quot;Ljung-Box&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Box-Ljung test
+## 
+## data:  residuals(arima_model)
+## X-squared = 13.355, df = 11, p-value = 0.2707</code></pre>
+<ul>
+<li><p>Los residuales parecen oscilar alrededor de cero, lo cual es consistente con el supuesto de que son ruido blanco (media cero).</p></li>
+<li><p>No se observan patrones evidentes, tendencias o estacionalidad en los residuales, lo que indica que el modelo ha capturado bien las dinámicas de la serie.</p></li>
+<li><p>La amplitud de los residuos parece constante en el tiempo, lo que respalda la suposición de homocedasticidad (varianza constante).</p></li>
+<li><p>Los gráficos indican que el modelo es adecuado para los datos. Los residuales son ruido blanco, con media cero, varianza constante, y sin autocorrelación significativa.</p></li>
+</ul>
+<p><strong>Predicciones:</strong> Se realizan predicciones y se grafican los resultados.</p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="modelos-estacionarios.html#cb77-1" tabindex="-1"></a><span class="co"># Pronóstico para los próximos 10 días</span></span>
+<span id="cb77-2"><a href="modelos-estacionarios.html#cb77-2" tabindex="-1"></a>pronostico_manual <span class="ot">&lt;-</span> <span class="fu">forecast</span>(arima_model, <span class="at">h =</span> <span class="dv">10</span>, <span class="at">level =</span> <span class="dv">95</span>)</span>
+<span id="cb77-3"><a href="modelos-estacionarios.html#cb77-3" tabindex="-1"></a></span>
+<span id="cb77-4"><a href="modelos-estacionarios.html#cb77-4" tabindex="-1"></a><span class="co"># Gráfico del pronóstico</span></span>
+<span id="cb77-5"><a href="modelos-estacionarios.html#cb77-5" tabindex="-1"></a><span class="fu">plot</span>(pronostico_manual, </span>
+<span id="cb77-6"><a href="modelos-estacionarios.html#cb77-6" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Pronóstico Precios Bitcoin con arima manual&quot;</span>,</span>
+<span id="cb77-7"><a href="modelos-estacionarios.html#cb77-7" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">&quot;Tiempo&quot;</span>, </span>
+<span id="cb77-8"><a href="modelos-estacionarios.html#cb77-8" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Log Precio USD&quot;</span>)</span>
+<span id="cb77-9"><a href="modelos-estacionarios.html#cb77-9" tabindex="-1"></a></span>
+<span id="cb77-10"><a href="modelos-estacionarios.html#cb77-10" tabindex="-1"></a><span class="co"># Agregar una cuadrícula al gráfico</span></span>
+<span id="cb77-11"><a href="modelos-estacionarios.html#cb77-11" tabindex="-1"></a><span class="fu">grid</span>()</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-285-1.png" width="672" /></p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="modelos-estacionarios.html#cb78-1" tabindex="-1"></a><span class="co"># Diagnóstico de residuos</span></span>
+<span id="cb78-2"><a href="modelos-estacionarios.html#cb78-2" tabindex="-1"></a><span class="fu">checkresiduals</span>(arima_model)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-285-2.png" width="672" /></p>
+<pre><code>## 
+##  Ljung-Box test
+## 
+## data:  Residuals from ARIMA(1,0,1) with non-zero mean
+## Q* = 287.16, df = 284, p-value = 0.4365
+## 
+## Model df: 2.   Total lags used: 286</code></pre>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="modelos-estacionarios.html#cb80-1" tabindex="-1"></a><span class="co"># Mostrar el pronóstico</span></span>
+<span id="cb80-2"><a href="modelos-estacionarios.html#cb80-2" tabindex="-1"></a>pronostico_manual</span></code></pre></div>
+<pre><code>##           Point Forecast       Lo 95      Hi 95
+## 2024.9205   0.0001160769 -0.06366609 0.06389824
+## 2024.9233   0.0012203533 -0.06260062 0.06504132
+## 2024.9260   0.0006276332 -0.06320451 0.06445978
+## 2024.9288   0.0009457756 -0.06288959 0.06478114
+## 2024.9315   0.0007750128 -0.06306128 0.06461131
+## 2024.9342   0.0008666697 -0.06296989 0.06470323
+## 2024.9370   0.0008174729 -0.06301917 0.06465411
+## 2024.9397   0.0008438792 -0.06299278 0.06468054
+## 2024.9425   0.0008297056 -0.06300696 0.06466637
+## 2024.9452   0.0008373133 -0.06299936 0.06467398</code></pre>
+<ul>
+<li><p>Los residuales se comportan como ruido blanco: no presentan autocorrelación significativa ni patrones evidentes, lo cual indica que el modelo está ajustado adecuadamente.</p></li>
+<li><p>La distribución de los residuos es razonablemente cercana a la normal, lo que respalda la validez de las inferencias y predicciones del modelo. Ahora, aunque los residuos son cercanos a la normalidad, se observa una ligera asimetría en las colas del histograma. Esto podría indicar la presencia de algunos valores extremos o una ligera desviación de la normalidad.</p></li>
+</ul>
+<p><strong>Normalidad en los residuos:</strong> El test de Shapiro-Wilk es una prueba estadística utilizada para evaluar si los residuos de un modelo ARIMA (o cualquier otro modelo) siguen una distribución normal. Este test compara la distribución observada de los residuos con una distribución normal teórica.</p>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="modelos-estacionarios.html#cb82-1" tabindex="-1"></a>residuales_manual<span class="ot">&lt;-</span>arima_model<span class="sc">$</span>residuals</span>
+<span id="cb82-2"><a href="modelos-estacionarios.html#cb82-2" tabindex="-1"></a><span class="fu">qqnorm</span>(residuales_manual)</span>
+<span id="cb82-3"><a href="modelos-estacionarios.html#cb82-3" tabindex="-1"></a><span class="fu">qqline</span>(residuales_manual)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-286-1.png" width="672" /></p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="modelos-estacionarios.html#cb83-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(residuales_manual)</span></code></pre></div>
+<pre><code>## 
+##  Shapiro-Wilk normality test
+## 
+## data:  residuales_manual
+## W = 0.947, p-value &lt; 2.2e-16</code></pre>
+<p>La falta de normalidad en los residuos no necesariamente invalida el modelo si los residuos siguen siendo ruido blanco (independientes y no correlacionados), lo cual se verifica a través de otros diagnósticos como la ACF y el test de Ljung-Box, sin embargo, una desviación significativa de la normalidad puede afectar la confiabilidad de los intervalos de predicción generados por el modelo.</p>
+<p>En este caso, al igual que el modelo con autoarima, se obtiene que visualmente se muestra una distribución normal de los residuos, pero con el test, se establece que se puede rechazar la hipótesis nula de que los residuos siguen una distribución normal.</p>
+<p>Lo anterior sugiere recurrir a modelos alternativos para abordar la falta de normalidad en los residuos. Entre estos se encuentran los modelos GARCH, EGARCH, GJR-GARCH, ARFIMA, entre otros.</p>
+</div>
+<div id="comparación-de-modelos" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Comparación de modelos<a href="modelos-estacionarios.html#comparación-de-modelos" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Se implementarons los modelos ARIMA (1,0,0) y ARIMA (1,0,1), una vez revisadas sus métricas de desempeño, se concluye que, para la serie de tiempo del Precio de Bitcoin:</p>
+<ul>
+<li><p>Aunque el ARIMA(1,0,1) tiene un log-likelihood ligeramente mayor y menor RMSE, la diferencia es mínima. Además, el ARIMA(1,0,0) muestra un mejor desempeño en AIC, AICc y BIC, lo que sugiere un modelo más eficiente en términos de simplicidad.</p></li>
+<li><p>El ARIMA(1,0,0)) tiene un MAPE significativamente más bajo, lo que sugiere que genera predicciones más precisas en términos porcentuales.</p></li>
+<li><p>ARIMA(1,0,1) introduce un parámetro adicional (MA1) pero este no aporta mejoras significativas al modelo. La penalización de complejidad reflejada en el BIC favorece al ARIMA(1,0,0).</p></li>
+<li><p>El ARIMA(1,0,0) tiene menor autocorrelación en los residuos, indicando que captura mejor las dependencias temporales.</p></li>
+<li><p>La diferencia entre ambos modelos es marginal, pero ARIMA(1,0,0) es más eficiente porque logra un desempeño casi igual al ARIMA(1,0,1) con menos complejidad. En aplicaciones prácticas, la simplicidad y menor penalización por complejidad hacen al ARIMA(1,0,0) preferible.</p></li>
+</ul>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="modelos-de-pronósticos-suavización-exponencial.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="modelos-de-regresión.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["volatilidad_bitcoin.pdf", "volatilidad_bitcoin.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

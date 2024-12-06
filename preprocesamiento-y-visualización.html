@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Capítulo 3 Preprocesamiento y Visualización | Series de Tiempo - Volatilidad Precio Bitcoin</title>
+  <meta name="description" content="Análisis de Series de Tiempo." />
+  <meta name="generator" content="bookdown 0.40 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Capítulo 3 Preprocesamiento y Visualización | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Análisis de Series de Tiempo." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Capítulo 3 Preprocesamiento y Visualización | Series de Tiempo - Volatilidad Precio Bitcoin" />
+  
+  <meta name="twitter:description" content="Análisis de Series de Tiempo." />
+  
+
+
+
+<meta name="date" content="2024-12-05" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="estructura-de-datos.html"/>
+<link rel="next" href="modelos-de-pronósticos-suavización-exponencial.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Propuesta Bookdown</a></li>
+<li class="chapter" data-level="2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html"><i class="fa fa-check"></i><b>2</b> Estructura de datos</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#promedio-móvil"><i class="fa fa-check"></i><b>2.1</b> Promedio Móvil</a></li>
+<li class="chapter" data-level="2.2" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#rezagos-lag"><i class="fa fa-check"></i><b>2.2</b> Rezagos (Lag)</a></li>
+<li class="chapter" data-level="2.3" data-path="estructura-de-datos.html"><a href="estructura-de-datos.html#estacionalidad"><i class="fa fa-check"></i><b>2.3</b> Estacionalidad</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html"><i class="fa fa-check"></i><b>3</b> Preprocesamiento y Visualización</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#descomposición"><i class="fa fa-check"></i><b>3.1</b> Descomposición</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#estacionariedad"><i class="fa fa-check"></i><b>3.2</b> Estacionariedad</a></li>
+<li class="chapter" data-level="3.3" data-path="preprocesamiento-y-visualización.html"><a href="preprocesamiento-y-visualización.html#diferenciación"><i class="fa fa-check"></i><b>3.3</b> Diferenciación</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html"><i class="fa fa-check"></i><b>4</b> Modelos de Pronósticos (Suavización Exponencial)</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#suavización-exponencial-simple"><i class="fa fa-check"></i><b>4.1</b> Suavización Exponencial Simple</a></li>
+<li class="chapter" data-level="4.2" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt"><i class="fa fa-check"></i><b>4.2</b> Modelo de Holt</a></li>
+<li class="chapter" data-level="4.3" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#modelo-de-holt-winters"><i class="fa fa-check"></i><b>4.3</b> Modelo de Holt-Winters</a></li>
+<li class="chapter" data-level="4.4" data-path="modelos-de-pronósticos-suavización-exponencial.html"><a href="modelos-de-pronósticos-suavización-exponencial.html#resumen-de-métricas"><i class="fa fa-check"></i><b>4.4</b> Resumen de Métricas</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html"><i class="fa fa-check"></i><b>5</b> Modelos Estacionarios</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-auto"><i class="fa fa-check"></i><b>5.1</b> Modelo ARIMA (Auto)</a></li>
+<li class="chapter" data-level="5.2" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#modelo-arima-manual"><i class="fa fa-check"></i><b>5.2</b> Modelo ARIMA (Manual)</a></li>
+<li class="chapter" data-level="5.3" data-path="modelos-estacionarios.html"><a href="modelos-estacionarios.html#comparación-de-modelos"><i class="fa fa-check"></i><b>5.3</b> Comparación de modelos</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html"><i class="fa fa-check"></i><b>6</b> Modelos de Regresión</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#modelo-prophet"><i class="fa fa-check"></i><b>6.1</b> Modelo Prophet</a></li>
+<li class="chapter" data-level="6.2" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#comparación-con-arima-y-ets"><i class="fa fa-check"></i><b>6.2</b> Comparación con ARIMA y ETS</a></li>
+<li class="chapter" data-level="6.3" data-path="modelos-de-regresión.html"><a href="modelos-de-regresión.html#selección-del-mejor-modelo"><i class="fa fa-check"></i><b>6.3</b> Selección del mejor modelo</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html"><i class="fa fa-check"></i><b>7</b> Redes Neuronales Recurrentes</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#elman-neural-networks"><i class="fa fa-check"></i><b>7.1</b> Elman Neural Networks</a></li>
+<li class="chapter" data-level="7.2" data-path="redes-neuronales-recurrentes.html"><a href="redes-neuronales-recurrentes.html#jordan-neural-networks"><i class="fa fa-check"></i><b>7.2</b> Jordan Neural Networks</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>8</b> Conclusiones</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Series de Tiempo - Volatilidad Precio Bitcoin</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="preprocesamiento-y-visualización" class="section level1 hasAnchor" style="text-align: justify" number="3">
+<h1><span class="header-section-number">Capítulo 3</span> Preprocesamiento y Visualización<a href="preprocesamiento-y-visualización.html#preprocesamiento-y-visualización" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>El preprocesamiento y la visualización de una serie de tiempo son pasos fundamentales en una serie tan volátil como la del precio de Bitcoin, donde variaciones abruptas pueden distorsionar el análisis. Por otro lado, facilita la comprensión inicial de los patrones de tendencia, estacionalidad y ciclos en los datos, permitiendo detectar anomalías y proporcionar un contexto visual que guía decisiones analíticas. Así, estos procesos mejoran la capacidad de interpretar y predecir el comportamiento del Bitcoin en el tiempo.</p>
+<p><strong>Descomposición Clásica</strong>: Es un método tradicional para descomponer una serie en sus componentes principales: tendencia, estacionalidad y ruido o residual. Esta técnica se basa en la premisa de que una serie temporal se puede desglosar en patrones observables que, cuando se suman o multiplican, generan el comportamiento de la serie completa. De aquí surgen dos modelos de descomposición:</p>
+<p>-<strong>Modelo Aditivo:</strong> Cuando los componentes se combinan de forma aditiva, siendo adecuado cuando la variación estacional es constante a lo largo del tiempo y no depende del nivel de la serie.</p>
+<p>-<strong>Modelo Multiplicativo:</strong> Cuando los componentes se combinan de forma multiplicativa, siendo adecuado cuando la estacionalidad y la tendencia varían en función del nivel de la serie, es decir, cuando los efectos estacionales son más fuertes en niveles altos de la serie.</p>
+<div id="descomposición" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Descomposición<a href="preprocesamiento-y-visualización.html#descomposición" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="preprocesamiento-y-visualización.html#cb20-1" tabindex="-1"></a><span class="co"># Descomposición aditiva</span></span>
+<span id="cb20-2"><a href="preprocesamiento-y-visualización.html#cb20-2" tabindex="-1"></a>decomp_add <span class="ot">&lt;-</span> <span class="fu">decompose</span>(btc_ts, <span class="at">type =</span> <span class="st">&quot;additive&quot;</span>)</span>
+<span id="cb20-3"><a href="preprocesamiento-y-visualización.html#cb20-3" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="preprocesamiento-y-visualización.html#cb20-4" tabindex="-1"></a><span class="co"># Convertir componentes en un data.frame y eliminar valores NA</span></span>
+<span id="cb20-5"><a href="preprocesamiento-y-visualización.html#cb20-5" tabindex="-1"></a>decomp_add_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb20-6"><a href="preprocesamiento-y-visualización.html#cb20-6" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">as.numeric</span>(<span class="fu">time</span>(btc_ts)),</span>
+<span id="cb20-7"><a href="preprocesamiento-y-visualización.html#cb20-7" tabindex="-1"></a>  <span class="at">original =</span> <span class="fu">as.numeric</span>(btc_ts),</span>
+<span id="cb20-8"><a href="preprocesamiento-y-visualización.html#cb20-8" tabindex="-1"></a>  <span class="at">trend =</span> <span class="fu">as.numeric</span>(decomp_add<span class="sc">$</span>trend),</span>
+<span id="cb20-9"><a href="preprocesamiento-y-visualización.html#cb20-9" tabindex="-1"></a>  <span class="at">seasonal =</span> <span class="fu">as.numeric</span>(decomp_add<span class="sc">$</span>seasonal),</span>
+<span id="cb20-10"><a href="preprocesamiento-y-visualización.html#cb20-10" tabindex="-1"></a>  <span class="at">random =</span> <span class="fu">as.numeric</span>(decomp_add<span class="sc">$</span>random)</span>
+<span id="cb20-11"><a href="preprocesamiento-y-visualización.html#cb20-11" tabindex="-1"></a>)</span>
+<span id="cb20-12"><a href="preprocesamiento-y-visualización.html#cb20-12" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="preprocesamiento-y-visualización.html#cb20-13" tabindex="-1"></a><span class="co"># Eliminar filas con NA</span></span>
+<span id="cb20-14"><a href="preprocesamiento-y-visualización.html#cb20-14" tabindex="-1"></a>decomp_add_df <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(decomp_add_df)</span>
+<span id="cb20-15"><a href="preprocesamiento-y-visualización.html#cb20-15" tabindex="-1"></a></span>
+<span id="cb20-16"><a href="preprocesamiento-y-visualización.html#cb20-16" tabindex="-1"></a><span class="co"># Visualización de componentes aditivos</span></span>
+<span id="cb20-17"><a href="preprocesamiento-y-visualización.html#cb20-17" tabindex="-1"></a><span class="fu">ggplot</span>(decomp_add_df, <span class="fu">aes</span>(<span class="at">x =</span> time)) <span class="sc">+</span></span>
+<span id="cb20-18"><a href="preprocesamiento-y-visualización.html#cb20-18" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> original, <span class="at">color =</span> <span class="st">&quot;Original&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb20-19"><a href="preprocesamiento-y-visualización.html#cb20-19" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> trend, <span class="at">color =</span> <span class="st">&quot;Tendencia&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb20-20"><a href="preprocesamiento-y-visualización.html#cb20-20" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> seasonal, <span class="at">color =</span> <span class="st">&quot;Estacionalidad&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb20-21"><a href="preprocesamiento-y-visualización.html#cb20-21" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> random, <span class="at">color =</span> <span class="st">&quot;Residuo&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb20-22"><a href="preprocesamiento-y-visualización.html#cb20-22" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Descomposición Aditiva de la Serie de Bitcoin&quot;</span>,</span>
+<span id="cb20-23"><a href="preprocesamiento-y-visualización.html#cb20-23" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Valor&quot;</span>,</span>
+<span id="cb20-24"><a href="preprocesamiento-y-visualización.html#cb20-24" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">&quot;Componentes&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb20-25"><a href="preprocesamiento-y-visualización.html#cb20-25" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;Original&quot;</span> <span class="ot">=</span> <span class="st">&quot;black&quot;</span>, </span>
+<span id="cb20-26"><a href="preprocesamiento-y-visualización.html#cb20-26" tabindex="-1"></a>                                <span class="st">&quot;Tendencia&quot;</span> <span class="ot">=</span> <span class="st">&quot;blue&quot;</span>, </span>
+<span id="cb20-27"><a href="preprocesamiento-y-visualización.html#cb20-27" tabindex="-1"></a>                                <span class="st">&quot;Estacionalidad&quot;</span> <span class="ot">=</span> <span class="st">&quot;red&quot;</span>, </span>
+<span id="cb20-28"><a href="preprocesamiento-y-visualización.html#cb20-28" tabindex="-1"></a>                                <span class="st">&quot;Residuo&quot;</span> <span class="ot">=</span> <span class="st">&quot;green&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb20-29"><a href="preprocesamiento-y-visualización.html#cb20-29" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-259-1.png" width="672" /></p>
+<p>La descomposición aditiva supone que la serie de tiempo es una suma de sus componentes: tendencia + estacionalidad + residuo.</p>
+<p>A través de este método, se observa que:</p>
+<ul>
+<li><p>Tendencia: Muestra una tendencia descendente desde mediados de 2021 hasta mediados de 2022, seguida de una recuperación gradual que continúa hasta 2024. Esta tendencia podría reflejar ciclos económicos o factores de mercado más amplios que afectan a Bitcoin. La tendencia sugiere que después de un periodo de declive, el mercado de Bitcoin comenzó a recuperar su valor en el último año, lo que podría indicar un periodo de recuperación o consolidación en el mercado.</p></li>
+<li><p>Estacionalidad: Muestra patrones que se repiten en ciclos regulares. La estacionalidad en este contexto podría estar relacionada con ciertos eventos recurrentes en el mercado de criptomonedas, como aumentos en la actividad comercial durante momentos específicos. La estacionalidad observada muestra oscilaciones regulares alrededor de cero, lo cual sugiere que hay ciertos patrones cíclicos que afectan el precio, aunque estos efectos son relativamente pequeños comparados con la tendencia y la volatilidad general de Bitcoin.</p></li>
+<li><p>Residuo: Muestra que, aunque podemos identificar patrones estacionales y una tendencia general, aún hay fluctuaciones impredecibles en el precio de Bitcoin que no son fáciles de modelar.</p></li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="preprocesamiento-y-visualización.html#cb21-1" tabindex="-1"></a><span class="co"># Descomposición multiplicativa</span></span>
+<span id="cb21-2"><a href="preprocesamiento-y-visualización.html#cb21-2" tabindex="-1"></a>decomp_mult <span class="ot">&lt;-</span> <span class="fu">decompose</span>(btc_ts, <span class="at">type =</span> <span class="st">&quot;multiplicative&quot;</span>)</span>
+<span id="cb21-3"><a href="preprocesamiento-y-visualización.html#cb21-3" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="preprocesamiento-y-visualización.html#cb21-4" tabindex="-1"></a><span class="co"># Convertir componentes en un data.frame y eliminar valores NA</span></span>
+<span id="cb21-5"><a href="preprocesamiento-y-visualización.html#cb21-5" tabindex="-1"></a>decomp_mult_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb21-6"><a href="preprocesamiento-y-visualización.html#cb21-6" tabindex="-1"></a>  <span class="at">time =</span> <span class="fu">as.numeric</span>(<span class="fu">time</span>(btc_ts)),</span>
+<span id="cb21-7"><a href="preprocesamiento-y-visualización.html#cb21-7" tabindex="-1"></a>  <span class="at">original =</span> <span class="fu">as.numeric</span>(btc_ts),</span>
+<span id="cb21-8"><a href="preprocesamiento-y-visualización.html#cb21-8" tabindex="-1"></a>  <span class="at">trend =</span> <span class="fu">as.numeric</span>(decomp_mult<span class="sc">$</span>trend),</span>
+<span id="cb21-9"><a href="preprocesamiento-y-visualización.html#cb21-9" tabindex="-1"></a>  <span class="at">seasonal =</span> <span class="fu">as.numeric</span>(decomp_mult<span class="sc">$</span>seasonal),</span>
+<span id="cb21-10"><a href="preprocesamiento-y-visualización.html#cb21-10" tabindex="-1"></a>  <span class="at">random =</span> <span class="fu">as.numeric</span>(decomp_mult<span class="sc">$</span>random)</span>
+<span id="cb21-11"><a href="preprocesamiento-y-visualización.html#cb21-11" tabindex="-1"></a>)</span>
+<span id="cb21-12"><a href="preprocesamiento-y-visualización.html#cb21-12" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="preprocesamiento-y-visualización.html#cb21-13" tabindex="-1"></a><span class="co"># Eliminar filas con NA</span></span>
+<span id="cb21-14"><a href="preprocesamiento-y-visualización.html#cb21-14" tabindex="-1"></a>decomp_mult_df <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(decomp_mult_df)</span>
+<span id="cb21-15"><a href="preprocesamiento-y-visualización.html#cb21-15" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="preprocesamiento-y-visualización.html#cb21-16" tabindex="-1"></a><span class="co"># Convertir los datos a formato largo para usar facet_wrap</span></span>
+<span id="cb21-17"><a href="preprocesamiento-y-visualización.html#cb21-17" tabindex="-1"></a>decomp_mult_long <span class="ot">&lt;-</span> <span class="fu">pivot_longer</span>(decomp_mult_df, <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">&quot;original&quot;</span>, <span class="st">&quot;trend&quot;</span>, <span class="st">&quot;seasonal&quot;</span>, <span class="st">&quot;random&quot;</span>),</span>
+<span id="cb21-18"><a href="preprocesamiento-y-visualización.html#cb21-18" tabindex="-1"></a>                                 <span class="at">names_to =</span> <span class="st">&quot;component&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span>)</span>
+<span id="cb21-19"><a href="preprocesamiento-y-visualización.html#cb21-19" tabindex="-1"></a></span>
+<span id="cb21-20"><a href="preprocesamiento-y-visualización.html#cb21-20" tabindex="-1"></a><span class="co"># Graficar todos los componentes en un solo gráfico con facetas y escala logarítmica</span></span>
+<span id="cb21-21"><a href="preprocesamiento-y-visualización.html#cb21-21" tabindex="-1"></a><span class="fu">ggplot</span>(decomp_mult_long, <span class="fu">aes</span>(<span class="at">x =</span> time, <span class="at">y =</span> value, <span class="at">color =</span> component)) <span class="sc">+</span></span>
+<span id="cb21-22"><a href="preprocesamiento-y-visualización.html#cb21-22" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb21-23"><a href="preprocesamiento-y-visualización.html#cb21-23" tabindex="-1"></a>  <span class="fu">scale_y_log10</span>() <span class="sc">+</span></span>
+<span id="cb21-24"><a href="preprocesamiento-y-visualización.html#cb21-24" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> component, <span class="at">scales =</span> <span class="st">&quot;free_y&quot;</span>, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb21-25"><a href="preprocesamiento-y-visualización.html#cb21-25" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Descomposición Multiplicativa de la Serie de Bitcoin&quot;</span>,</span>
+<span id="cb21-26"><a href="preprocesamiento-y-visualización.html#cb21-26" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Tiempo&quot;</span>,</span>
+<span id="cb21-27"><a href="preprocesamiento-y-visualización.html#cb21-27" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Valor (Escala Logarítmica)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb21-28"><a href="preprocesamiento-y-visualización.html#cb21-28" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-260-1.png" width="672" /></p>
+<p>La descomposición multiplicativa supone que la serie de tiempo es el producto de sus componentes: tendencia x estacionalidad x residuo.</p>
+<p>A través de este método, se observa que:</p>
+<ul>
+<li><p>Tendencia: Muestra que esta es suave, es decir, no muestra un aumento progresivo en la variabilidad, lo que ayuda a identificar la dirección general sin verse afectada por fluctuaciones de corto plazo.</p></li>
+<li><p>Estacionalidad: Muestra patrones cíclicos que se repiten en el tiempo, lo que indica que existen ciertas fluctuaciones en el precio de Bitcoin que son predecibles y que siguen un ciclo regular. El hecho de que este componente sea proporcional a la tendencia sugiere que los cambios estacionales son más fuertes cuando el precio es alto y más débiles cuando el precio es bajo.</p></li>
+<li><p>Residuo: Muestra variaciones relativamente pequeñas alrededor de 1, lo cual sugiere que, en su mayoría, las oscilaciones de la serie pueden ser explicadas por la tendencia y la estacionalidad.</p></li>
+</ul>
+<p>Una vez análizados los dos métodos de descomposición, dado el comportamiento cíclico y proporcional a la tendencia del precio de Bitcoin, la descomposición multiplicativa es la más adecuada.</p>
+</div>
+<div id="estacionariedad" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Estacionariedad<a href="preprocesamiento-y-visualización.html#estacionariedad" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>El test de Dickey-Fuller, también conocido como prueba de raíz unitaria, determina si una serie temporal es estacionaria. La hipótesis nula del test asume que la serie tiene una raíz unitaria, es decir, que no es estacionaria. Si el valor p resultante es menor que el nivel de significancia 0.05, se rechaza la hipótesis nula, lo cual sugiere que la serie es estacionaria.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="preprocesamiento-y-visualización.html#cb22-1" tabindex="-1"></a><span class="co"># Realiza el test de Dickey-Fuller sobre la serie de tiempo</span></span>
+<span id="cb22-2"><a href="preprocesamiento-y-visualización.html#cb22-2" tabindex="-1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">adf.test</span>(btc_ts)</span>
+<span id="cb22-3"><a href="preprocesamiento-y-visualización.html#cb22-3" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="preprocesamiento-y-visualización.html#cb22-4" tabindex="-1"></a><span class="co"># Muestra el resultado</span></span>
+<span id="cb22-5"><a href="preprocesamiento-y-visualización.html#cb22-5" tabindex="-1"></a><span class="fu">print</span>(resultado)</span></code></pre></div>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  btc_ts
+## Dickey-Fuller = -0.56974, Lag order = 11, p-value = 0.9787
+## alternative hypothesis: stationary</code></pre>
+<p>En este caso se observa que el test Dickey-Fuller indica que la serie no es estacionaria, puesto que el valor p resultó mayor al nivel de significancia (0.05).</p>
+<p><strong>En vista de lo anterior, se debe apliar diferenciación a la serie, para alcanzar la estacionariedad</strong></p>
+<p>Se verifica el número de veces que se debe aplicar diferenciación para obtener estacionariedad.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="preprocesamiento-y-visualización.html#cb24-1" tabindex="-1"></a>num_diffs <span class="ot">&lt;-</span> <span class="fu">ndiffs</span>(btc_ts)</span>
+<span id="cb24-2"><a href="preprocesamiento-y-visualización.html#cb24-2" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">&quot;El número de veces a diferenciar es&quot;</span>, num_diffs, <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>## El número de veces a diferenciar es 1</code></pre>
+</div>
+<div id="diferenciación" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Diferenciación<a href="preprocesamiento-y-visualización.html#diferenciación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Consiste en la transformación de la serie, restando su valor actual con el valor anterior, con el objetivo de eliminar tendencias o patrones de crecimiento a lo largo del tiempo, de manera que se convierta en una serie estacionaria.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="preprocesamiento-y-visualización.html#cb26-1" tabindex="-1"></a><span class="co"># Diferenciación de primer orden</span></span>
+<span id="cb26-2"><a href="preprocesamiento-y-visualización.html#cb26-2" tabindex="-1"></a>diff_btc <span class="ot">&lt;-</span> <span class="fu">diff</span>(btc_ts, <span class="at">lag=</span><span class="dv">1</span>)</span>
+<span id="cb26-3"><a href="preprocesamiento-y-visualización.html#cb26-3" tabindex="-1"></a><span class="co"># Graficar con título y color</span></span>
+<span id="cb26-4"><a href="preprocesamiento-y-visualización.html#cb26-4" tabindex="-1"></a><span class="fu">plot</span>(diff_btc, <span class="at">main =</span> <span class="st">&quot;Diferenciación de primer orden del Precio de Bitcoin&quot;</span>, <span class="at">ylab =</span> <span class="st">&quot;diff_btc&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Time&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-263-1.png" width="672" /></p>
+<p>Del gráfico se puede observar que, la serie diferenciada muestra una gran volatilidad al inicio, con diferencias que oscilan significativamente en ambos sentidos, indicando que los precios de Bitcoin estaban experimentando cambios bruscos, tanto al alza como a la baja. Posteriormente, la volatilidad disminuye, por lo que el precio atravesó por un periodo de estabilización, sin embargo, al final de la serie, se vuelve a presentar un incremento en la volatilidad.</p>
+<p>Por otra parte, la serie diferenciada parece oscilar alrededor de cero, esto es consecuencia de la eliminación de la tendencia.</p>
+<p>Finalmente, se realiza de nuevo el test de Dickey-Fuller.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="preprocesamiento-y-visualización.html#cb27-1" tabindex="-1"></a><span class="co"># Realiza el test de Dickey-Fuller sobre la serie de tiempo diferenciada</span></span>
+<span id="cb27-2"><a href="preprocesamiento-y-visualización.html#cb27-2" tabindex="-1"></a>resultado_diff <span class="ot">&lt;-</span> <span class="fu">adf.test</span>(diff_btc)</span></code></pre></div>
+<pre><code>## Warning in adf.test(diff_btc): p-value smaller than printed p-value</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="preprocesamiento-y-visualización.html#cb29-1" tabindex="-1"></a><span class="co"># Muestra el resultado diferenciado</span></span>
+<span id="cb29-2"><a href="preprocesamiento-y-visualización.html#cb29-2" tabindex="-1"></a><span class="fu">print</span>(resultado_diff)</span></code></pre></div>
+<pre><code>## 
+##  Augmented Dickey-Fuller Test
+## 
+## data:  diff_btc
+## Dickey-Fuller = -10.883, Lag order = 11, p-value = 0.01
+## alternative hypothesis: stationary</code></pre>
+<p>En este caso, dado que el valor p es muy bajo (0.01), hay suficiente evidencia estadística para rechazar la hipótesis nula y aceptar la alternativa, es decir, que la serie diferenciada es estacionaria, por lo que la tendencia ha sido eliminada.</p>
+<p><strong>Funciones ACF y PACF</strong></p>
+<p>Las funciones de autocorrelación (ACF) y autocorrelación parcial (PACF) son herramientas para el análisis de series temporales, que permiten identificar patrones y a determinar los parámetros de los modelos ARIMA. En este caso, Para ajustar el modelo ARIMA, resulta fundamental determinar si se necesitan términos AR o MA para corregir cualquier autocorrelación que persista en la serie diferenciada.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="preprocesamiento-y-visualización.html#cb31-1" tabindex="-1"></a>acf_diff <span class="ot">&lt;-</span> <span class="fu">acf</span>(diff_btc, <span class="at">main =</span> <span class="st">&quot;Función de Autocorrelación de la Serie Diferenciada (ACF)&quot;</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-265-1.png" width="672" /></p>
+<p>La ACF muestra un pico significativo en el rezago 1, lo cual indica que hay autocorrelación en el primer rezago de la serie diferenciada. En los rezagos posteriores, los valores de la ACF están dentro del rango de no significancia (dentro de las líneas azules), lo que indica que la serie no tiene autocorrelación fuerte a partir del segundo rezago.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="preprocesamiento-y-visualización.html#cb32-1" tabindex="-1"></a>pacf_diff <span class="ot">&lt;-</span> <span class="fu">pacf</span>(diff_btc, <span class="at">main =</span> <span class="st">&quot;Función de Autocorrelación Parcial de la Serie Diferenciada (PACF)&quot;</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-266-1.png" width="672" /></p>
+<p>La PACF muestra varios picos en diferentes rezagos, aunque la mayoría están dentro del límite de no significancia. Este patrón sugiere una serie que tiene un componente autoregresivo, es decir, de tipo AR.</p>
+<p><strong>Verificar Transformación de Box-Cox:</strong></p>
+<p>Si bien al realizar la descomposición multiplicativa, el componente de tendencia parece seguir un ciclo suave, sin cambios bruscos en la amplitud, lo que sería un indicio de que la tendencia no muestra un aumento en la variabilidad, resulta necesario corroborar la necesidad o no de realizar transformaciones a la serie.</p>
+<p>Box-Cox se utiliza para encontar el mejor exponente para estabilizar la varianza. El valor de lambda será el que determine si resulta necesaria aplicar la transformación.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="preprocesamiento-y-visualización.html#cb33-1" tabindex="-1"></a><span class="co"># Calcular el valor de lambda óptimo para la transformación de Box-Cox</span></span>
+<span id="cb33-2"><a href="preprocesamiento-y-visualización.html#cb33-2" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">BoxCox.lambda</span>(btc_ts)</span>
+<span id="cb33-3"><a href="preprocesamiento-y-visualización.html#cb33-3" tabindex="-1"></a><span class="fu">print</span>(lambda)</span></code></pre></div>
+<pre><code>## [1] 0.4679757</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="preprocesamiento-y-visualización.html#cb35-1" tabindex="-1"></a><span class="co"># Aplicar la transformación de Box-Cox usando el valor de lambda</span></span>
+<span id="cb35-2"><a href="preprocesamiento-y-visualización.html#cb35-2" tabindex="-1"></a>btc_ts_transformed <span class="ot">&lt;-</span> <span class="fu">BoxCox</span>(btc_ts, lambda)</span>
+<span id="cb35-3"><a href="preprocesamiento-y-visualización.html#cb35-3" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="preprocesamiento-y-visualización.html#cb35-4" tabindex="-1"></a><span class="co"># Escalar ambas series para llevarlas a la misma escala</span></span>
+<span id="cb35-5"><a href="preprocesamiento-y-visualización.html#cb35-5" tabindex="-1"></a>btc_ts_scaled <span class="ot">&lt;-</span> <span class="fu">scale</span>(btc_ts)</span>
+<span id="cb35-6"><a href="preprocesamiento-y-visualización.html#cb35-6" tabindex="-1"></a>btc_ts_transformed_scaled <span class="ot">&lt;-</span> <span class="fu">scale</span>(btc_ts_transformed)</span>
+<span id="cb35-7"><a href="preprocesamiento-y-visualización.html#cb35-7" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="preprocesamiento-y-visualización.html#cb35-8" tabindex="-1"></a><span class="co"># Graficar ambas series en el mismo gráfico</span></span>
+<span id="cb35-9"><a href="preprocesamiento-y-visualización.html#cb35-9" tabindex="-1"></a><span class="fu">plot</span>(btc_ts_scaled, <span class="at">type =</span> <span class="st">&quot;l&quot;</span>, <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">lwd =</span> <span class="dv">2</span>, </span>
+<span id="cb35-10"><a href="preprocesamiento-y-visualización.html#cb35-10" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">&quot;Serie Original y Serie Transformada con Box-Cox (Escaladas)&quot;</span>,</span>
+<span id="cb35-11"><a href="preprocesamiento-y-visualización.html#cb35-11" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">&quot;Valor Escalado&quot;</span>, <span class="at">xlab =</span> <span class="st">&quot;Tiempo&quot;</span>, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="dv">4</span>))</span>
+<span id="cb35-12"><a href="preprocesamiento-y-visualización.html#cb35-12" tabindex="-1"></a><span class="fu">lines</span>(btc_ts_transformed_scaled, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb35-13"><a href="preprocesamiento-y-visualización.html#cb35-13" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="fu">c</span>(<span class="st">&quot;Serie Original (Escalada)&quot;</span>, </span>
+<span id="cb35-14"><a href="preprocesamiento-y-visualización.html#cb35-14" tabindex="-1"></a>                              <span class="fu">paste</span>(<span class="st">&quot;Serie Transformada con Box-Cox (Escalada, λ =&quot;</span>, <span class="fu">round</span>(lambda, <span class="dv">2</span>), <span class="st">&quot;)&quot;</span>)), </span>
+<span id="cb35-15"><a href="preprocesamiento-y-visualización.html#cb35-15" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="volatilidad_bitcoin_files/figure-html/unnamed-chunk-267-1.png" width="672" /></p>
+<p>Un valor de lambda entre 0 y 1 indica que la varianza de la serie aumenta con el nivel de los datos, pero no de manera tan pronunciada como para necesitar una transformación logarítmica completa, que es cuando lambda = 0. El valor de lambda obtenido sugiere que la relación entre el nivel de los datos y su varianza es moderada</p>
+<p>Por su parte, el gráfico muestra que la serie original escalada como la transformada están muy alineadas, en otras palabras, la transformación no altera significativamente la estructura de la serie. Esto sugiere que la serie original ya tiene una varianza estable y la transformación de Box-Cox no agrega un beneficio evidente en este caso.</p>
+<p>En conclusión, inicialmente no es estrictamente necesario aplicar una transformación a la serie para controlar la tendencia, dado que la diferenciación elimina este efecto. Tampoco es necesario aplicar una transformación para controlar la variabilidad, dado que la serie original muestra una varianza estable.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="estructura-de-datos.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="modelos-de-pronósticos-suavización-exponencial.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["volatilidad_bitcoin.pdf", "volatilidad_bitcoin.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
